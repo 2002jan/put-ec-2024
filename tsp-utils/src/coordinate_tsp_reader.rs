@@ -1,6 +1,6 @@
 use std::path::Path;
 use csv::StringRecord;
-use crate::CostMatrix;
+use crate::cost_matrix::CostMatrix;
 
 struct CoordinatePoint {
     x: i32,
