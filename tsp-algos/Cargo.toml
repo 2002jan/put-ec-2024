@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 tsp-utils = {path = "../tsp-utils"}
 rand = "0.8.5"
+chrono = "0.4.38"

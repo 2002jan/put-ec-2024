@@ -1,12 +1,15 @@
+use std::path::Path;
 use tsp_utils::cost_matrix::CostMatrix;
 use tsp_utils::evaluate_solution::evaluate_solution;
 use crate::TspAlgorithm;
 
-pub fn test_tsp_algorithm<Algorithm: TspAlgorithm>(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, verbose: bool) -> (i32, i32, i32)
+pub fn test_tsp_algorithm<Algorithm: TspAlgorithm>(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, output_path: &Path, verbose: bool) -> (i32, i32, i32)
 {
     let problem_size = cost_matrix.size();
     let mut min_cost = i32::MAX;
+    let mut min_solution= vec![0];
     let mut max_cost = 0;
+    let mut max_solution = vec![0];
     let mut aggregated_cost = 0;
 
     for starting_point in 0..problem_size as i32 {
@@ -15,10 +18,12 @@ pub fn test_tsp_algorithm<Algorithm: TspAlgorithm>(cost_matrix: &CostMatrix, poi
 
         if min_cost > cost {
             min_cost = cost;
+            min_solution = solution.clone();
         }
 
         if max_cost < cost {
             max_cost = cost;
+            max_solution = solution.clone();
         }
 
         aggregated_cost += cost;

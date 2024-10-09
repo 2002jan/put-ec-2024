@@ -7,4 +7,6 @@ pub trait TspAlgorithm {
     fn run(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: Option<i32>) -> Vec<i32>;
 
     fn name() -> &'static str;
+
+    fn snaked_name() -> &'static str;
 }

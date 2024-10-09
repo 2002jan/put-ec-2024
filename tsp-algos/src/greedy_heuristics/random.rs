@@ -22,4 +22,8 @@ impl TspAlgorithm for RandomAlgorithm {
     fn name() -> &'static str {
         "Random Algorithm"
     }
+
+    fn snaked_name() -> &'static str {
+        "random_algorithm"
+    }
 }
