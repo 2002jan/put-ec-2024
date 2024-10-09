@@ -1,17 +1,19 @@
-use clap::{Parser, Subcommand};
+use clap::{Parser, ValueEnum};
 
 #[derive(Parser)]
 #[command(version)]
 pub struct Args {
+    /// What kind of test to run
+    #[arg(value_enum)]
+    pub command: Command,
+
     /// Problem file path
     pub file: String,
 
-    /// What kind of test to run
-    #[command(subcommand)]
-    pub command: Command
+    pub outputs_folder: Option<String>
 }
 
-#[derive(Subcommand)]
+#[derive(Clone, ValueEnum)]
 pub enum Command {
     Task1
 }

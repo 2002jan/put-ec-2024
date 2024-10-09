@@ -9,3 +9,4 @@ edition = "2021"
 run-utils = {path = "../run-utils"}
 tsp-utils = {path = "../tsp-utils"}
 tsp-algos = {path = "../tsp-algos"}
+chrono = "0.4.38"
