@@ -1,6 +1,7 @@
 use std::fs::create_dir_all;
 use std::path::{Path, PathBuf};
 use run_utils::args::{Args, Command};
+use tsp_algos::greedy_heuristics::greedy_cycle::GreedyCycle;
 use tsp_algos::greedy_heuristics::nearest_neighbor_any::NearestNeighborAnyAlgorithm;
 use tsp_algos::greedy_heuristics::random::RandomAlgorithm;
 use tsp_algos::greedy_heuristics::nearest_neighbor_end::NearestNeighborEndAlgorithm;
@@ -40,6 +41,7 @@ fn main() {
             test_tsp_algorithm::<RandomAlgorithm>(&cost_matrix, &points_cost, &output_path, true);
             test_tsp_algorithm::<NearestNeighborEndAlgorithm>(&cost_matrix, &points_cost, &output_path, true);
             test_tsp_algorithm::<NearestNeighborAnyAlgorithm>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<GreedyCycle>(&cost_matrix, &points_cost, &output_path, true);
         }
     }
 
