@@ -1,6 +1,7 @@
 use std::fs::create_dir_all;
 use std::path::{Path, PathBuf};
 use run_utils::args::{Args, Command};
+use tsp_algos::greedy_heuristics::nearest_neighbor_any::NearestNeighborAnyAlgorithm;
 use tsp_algos::greedy_heuristics::random::RandomAlgorithm;
 use tsp_algos::greedy_heuristics::nearest_neighbor_end::NearestNeighborEndAlgorithm;
 use tsp_algos::test_algorithm::test_tsp_algorithm;
@@ -27,6 +28,8 @@ fn main() {
                 create_dir_all(&path).expect("Could not create output folder");
             }
 
+            println!("Results will be saved to {current_datetime}\n");
+
             Some(path)
         }
     };
@@ -36,6 +39,7 @@ fn main() {
         Command::Task1 => {
             test_tsp_algorithm::<RandomAlgorithm>(&cost_matrix, &points_cost, &output_path, true);
             test_tsp_algorithm::<NearestNeighborEndAlgorithm>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<NearestNeighborAnyAlgorithm>(&cost_matrix, &points_cost, &output_path, true);
         }
     }
 
