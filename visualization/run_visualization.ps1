@@ -1,6 +1,6 @@
 # Save this as run_visualization.ps1
-$OutputDir = "../outputs"
-$PythonScript = "visualize.py"
+$OutputDir = "outputs"
+$PythonScript = "visualization/visualize.py"
 
 # Check if the Python script exists
 if (-Not (Test-Path $PythonScript)) {

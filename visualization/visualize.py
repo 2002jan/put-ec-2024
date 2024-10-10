@@ -58,13 +58,13 @@ def visualize_path(csv_file, node_indices, algorithm):
 
     date = pd.to_datetime('today').strftime('%Y-%m-%d-%H-%M-%S')
 
-    plt.savefig(f'../plots/{date}-{algorithm}.png')
+    plt.savefig(f'plots/{date}-{algorithm}.png')
 
 
 if __name__ == '__main__':
     
-    if not os.path.exists('../plots'):
-        os.makedirs('../plots')
+    if not os.path.exists('plots'):
+        os.makedirs('plots')
 
     
     # get the filename from args
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     algorithm = filename.split('\\')[-1].split('_score')[0].capitalize()
     node_indices = pd.read_csv(f'{filename}', header=None)
 
-    csv_file = sys.argv[2] if len(sys.argv) > 2 else '../data/TSPA.csv'
+    csv_file = sys.argv[2] if len(sys.argv) > 2 else 'data/TSPA.csv'
 
     node_indices = node_indices.iloc[:, 0].tolist()
 
