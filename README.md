@@ -20,6 +20,6 @@ where `<path_to_file>` is the path to the file with the results of the algorithm
 
 You can also use a shell script `run_visualization.sh` to run the visualization script. It will iterate through the outputs directory and its subdirectories and visualize data from any csv files found there.
 ```bash
-.\run_visualization.sh 
+.\run_visualization.ps1
 ```
 
