@@ -35,6 +35,7 @@ fn main() {
     match args.command {
         Command::Task1 => {
             test_tsp_algorithm::<RandomAlgorithm>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<NearestNeighborEndAlgorithm>(&cost_matrix, &points_cost, &output_path, true);
         }
     }
 
