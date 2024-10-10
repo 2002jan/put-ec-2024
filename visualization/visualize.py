@@ -3,11 +3,17 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import sys
 import os
+from math import ceil
 
 
 def visualize_path(csv_file, node_indices, algorithm):
     data = pd.read_csv(csv_file, sep=';', header=None)
     data.columns = ['x', 'y', 'cost']
+
+    x_max = data['x'].max()
+    y_max = data['y'].max()
+
+    aspect_ration = x_max / y_max
 
     selected_nodes = data.iloc[node_indices]
 
@@ -18,7 +24,9 @@ def visualize_path(csv_file, node_indices, algorithm):
     norm = plt.Normalize(vmin=selected_nodes['cost'].min(), vmax=selected_nodes['cost'].max())
     cmap = sns.color_palette("coolwarm", as_cmap=True)
 
-    plt.figure(figsize=(8, 8))
+    plot_size = (ceil(8 * aspect_ration), 8) if aspect_ration >= 1 else (8, ceil(8 / aspect_ration))
+
+    plt.figure(figsize=plot_size)
 
     scatter = plt.scatter(
         selected_nodes['x'], 
@@ -57,6 +65,9 @@ def visualize_path(csv_file, node_indices, algorithm):
     # add timestamp to the filename
 
     date = pd.to_datetime('today').strftime('%Y-%m-%d-%H-%M-%S')
+
+    ax = plt.gca()
+    ax.set_aspect('equal', adjustable='box')
 
     plt.savefig(f'plots/{date}-{algorithm}.png')
 
