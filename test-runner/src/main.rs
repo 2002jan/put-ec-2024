@@ -2,6 +2,7 @@ use std::fs::create_dir_all;
 use std::path::{Path, PathBuf};
 use run_utils::args::{Args, Command};
 use tsp_algos::greedy_heuristics::random::RandomAlgorithm;
+use tsp_algos::greedy_heuristics::nearest_neighbor_end::NearestNeighborEndAlgorithm;
 use tsp_algos::test_algorithm::test_tsp_algorithm;
 use tsp_utils::coordinate_tsp_reader::load_from_coordinate_csv;
 
