@@ -6,7 +6,7 @@ import os
 from math import ceil
 
 
-def visualize_path(csv_file, node_indices, algorithm):
+def visualize_path(csv_file, node_indices, algorithm, output_dir):
     data = pd.read_csv(csv_file, sep=';', header=None)
     data.columns = ['x', 'y', 'cost']
 
@@ -59,25 +59,21 @@ def visualize_path(csv_file, node_indices, algorithm):
 
     plt.xlabel('X Coordinate')
     plt.ylabel('Y Coordinate')
-    plt.title(f'{algorithm} - Cycle')
+    plt.title(f'{algorithm}')
 
     # Save the plot to a file (optional)
     # add timestamp to the filename
 
-    date = pd.to_datetime('today').strftime('%Y-%m-%d-%H-%M-%S')
+    # date = pd.to_datetime('today').strftime('%Y-%m-%d-%H-%M-%S')
 
     ax = plt.gca()
     ax.set_aspect('equal', adjustable='box')
 
-    plt.savefig(f'plots/{date}-{algorithm}.png')
+    plt.savefig(f'{output_dir}/{algorithm}.png')
 
 
 if __name__ == '__main__':
-    
-    if not os.path.exists('plots'):
-        os.makedirs('plots')
 
-    
     # get the filename from args
     filename = sys.argv[1]
     algorithm = filename.split('\\')[-1].split('_score')[0].capitalize()
@@ -85,8 +81,15 @@ if __name__ == '__main__':
 
     csv_file = sys.argv[2] if len(sys.argv) > 2 else 'data/TSPA.csv'
 
+    if len(sys.argv) > 3:
+        output_directory = sys.argv[3]
+    else:
+        if not os.path.exists('plots'):
+            os.makedirs('plots')
+        output_directory = 'plots'
+
     node_indices = node_indices.iloc[:, 0].tolist()
 
-    visualize_path(csv_file, node_indices, algorithm)
+    visualize_path(csv_file, node_indices, algorithm, output_directory)
 
 
