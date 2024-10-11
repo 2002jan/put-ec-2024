@@ -1,6 +1,7 @@
 # Save this as run_visualization.ps1
 $OutputDir = "outputs"
 $PythonScript = "visualization/visualize.py"
+$dataset = "data/TSPB.csv"
 
 # Check if the Python script exists
 if (-Not (Test-Path $PythonScript)) {
@@ -13,5 +14,5 @@ $csvFiles = Get-ChildItem -Path $OutputDir -Recurse -Filter "*.csv"
 
 foreach ($csvFile in $csvFiles) {
     Write-Host "Processing $($csvFile.FullName)"
-    python $PythonScript $csvFile.FullName 
+    python $PythonScript $csvFile.FullName $dataset
 }
