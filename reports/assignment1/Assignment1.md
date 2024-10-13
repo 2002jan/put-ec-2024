@@ -18,61 +18,68 @@ The objective function is to find the route that minimizes the sum of distances 
 ### Random algorithm
 ```
 Function RandomAlgorithm(cost_matrix, points_cost, start_from):
-    size = number of nodes in cost_matrix
-    solution_size = ceil(size / 2)
+    size := number of nodes in cost_matrix
+    solution_size := ⌈(size / 2)⌉
 
     // Create a list of all nodes
-    solution = [0, 1, 2, ..., size - 1]
+    solution := [0, 1, 2, ..., size - 1]
 
     // Shuffle the nodes randomly
     Shuffle(solution)
 
     // Select the first solution_size nodes
-    solution = solution[0 to solution_size - 1]
+    solution := solution[0 to solution_size - 1]
 
-    Return solution
+    RETURN solution
+
 ```
 
 ### Nearest neigbor algorithm with adding the node at the end
 ```
 Function NearestNeighborEndAlgorithm(cost_matrix, points_cost, start_from):
-    size = number of nodes in cost_matrix
-    solution_size = ceil(size / 2)
+    size := number of nodes in cost_matrix
+    solution_size := ⌈(size / 2)⌉
 
     // Initialize the start node
-    If start_from is provided:
-        start_node = start_from
-    Else:
-        start_node = 0
+    IF start_from is provided:
+        start_node := start_from
+    ELSE:
+        start_node := 0
+    ENDIF
 
     // Initialize solution with the start node
-    solution = [start_node]
+    solution := [start_node]
 
     // Initialize visited array to mark nodes as visited
-    visited = [false, false, ..., false] of length size
-    visited[start_node] = true
+    visited := [false, false, ..., false] of length size
+    visited[start_node] := true
 
     // Build the solution by adding the nearest node
-    While length of solution < solution_size:
-        last_node = last node in solution
+    WHILE length of solution < solution_size:
+        last_node := last node in solution
 
-        nearest_node = None
-        nearest_cost = Infinity
+        nearest_node := None
+        nearest_cost := Infinity
 
         // Find the nearest unvisited node
-        For each node in 0 to size - 1:
-            If node is not visited:
-                distance = cost_matrix[last_node][node] + points_cost[node]
-                If distance < nearest_cost:
-                    nearest_cost = distance
-                    nearest_node = node
+        FOR each node in 0 to size - 1:
+            IF node is not visited:
+                distance := cost_matrix[last_node][node] + points_cost[node]
+                IF distance < nearest_cost:
+                    nearest_cost := distance
+                    nearest_node := node
+                ENDIF
+            ENDIF
 
         // Add the nearest node to the solution and mark it visited
-        If nearest_node is not None:
+        IF nearest_node is not None:
             Add nearest_node to solution
-            visited[nearest_node] = true
+            visited[nearest_node] := true
+        ENDIF
+    ENDWHILE
+    
+    RETURN solution
 
-    Return solution
 ```
 
 
