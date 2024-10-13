@@ -4,6 +4,31 @@
 - Michał Kamiński 151969
 - Jan Indrzejczak 152059
 
+## Table of contents
+
+<!-- TOC -->
+* [Assignment 1 - Greedy heuristics](#assignment-1---greedy-heuristics-)
+  * [Authors](#authors-)
+  * [Table of contents](#table-of-contents)
+  * [Description of the problem](#description-of-the-problem-)
+  * [Pseudocode of all implemented algorithms](#pseudocode-of-all-implemented-algorithms-)
+    * [Random algorithm](#random-algorithm)
+    * [Nearest neigbor algorithm with adding the node at the end](#nearest-neigbor-algorithm-with-adding-the-node-at-the-end)
+    * [Nearest neigbor algorithm with adding the node at any position](#nearest-neigbor-algorithm-with-adding-the-node-at-any-position)
+    * [Greedy Cycle](#greedy-cycle)
+  * [Resutls of computatiional experiments](#resutls-of-computatiional-experiments)
+    * [TSPA](#tspa)
+    * [TSPB](#tspb)
+  * [Plots of the results](#plots-of-the-results)
+    * [TSPA](#tspa-)
+    * [TSPB](#tspb-1)
+  * [Best solutions as a list of nodes](#best-solutions-as-a-list-of-nodes)
+    * [TSPA](#tspa-1)
+    * [TSPB](#tspb-2)
+  * [Source code:](#source-code)
+  * [Conclusions](#conclusions)
+<!-- TOC -->
+
 ## Description of the problem 
 
 The travelling salesman problem (TSP) is a classic optimization problem. 
@@ -82,6 +107,135 @@ Function NearestNeighborEndAlgorithm(cost_matrix, points_cost, start_from):
 
 ```
 
+### Nearest neigbor algorithm with adding the node at any position
+```
+Function NearestNeighborEndAlgorithm(cost_matrix, points_cost, start_from)
+    size := number of nodes in cost_matrix
+    solution_size := ⌈(size / 2)⌉
+    
+    // Initialize the start node
+    IF start_from is provided:
+        start_node := start_from
+    ELSE:
+        start_node := 0
+    ENDIF
+
+    // Initialize solution with the start node
+    solution := [start_node]
+
+    // Initialize visited array to mark nodes as visited
+    visited := [false, false, ..., false] of length size
+    visited[start_node] := true
+    
+    current_cost := points_cost[start_node]
+    
+    WHILE length of solution < solution_size
+        current_solution_length := length of solution
+        
+        min_cost := Infinity
+        min_cost_node := None
+        min_cost_position := 0
+        
+        FOR each node in 0 to size - 1
+            IF node is not visited
+                FOR each position in 0 to current_solution_length + 1
+                    cost_after_insertion := current_cost + points_cost[node]
+                    
+                    IF position == 0
+                        cost_after_insertion := cost_after_insertion + cost_matrix[solution[0]][node]
+                    ELSE IF position == current_solution_length
+                        cost_after_insertion := cost_after_insertion + cost_matrix[solution[current_solution_length - 1]][node]
+                    ELSE
+                        cost_after_insertion := cost_after_insertion 
+                            - cost_matrix[solution[position]][position - 1]
+                            + cost_matrix[solution[position - 1]][node]
+                            + cost_matrix[solution[position]][node]
+                    ENDIF
+                    
+                    IF min_cost > cost_after_insertion 
+                        min_cost := cost_after_insertion
+                        min_cost_node := node
+                        min_cost_position := position
+                    ENDIF
+                ENDFOR
+            ENDIF
+        ENDFOR
+        
+        insert into "solution" value of "min_cost_node" at index "min_cost_position"
+        
+        current_cost := min_cost
+        visited[min_cost_node] = true
+        
+    ENDWHILE
+    
+    RETURN solution
+```
+
+
+### Greedy Cycle
+```
+Function NearestNeighborEndAlgorithm(cost_matrix, points_cost, start_from)
+    size := number of nodes in cost_matrix
+    solution_size := ⌈(size / 2)⌉
+    
+    // Initialize the start node
+    IF start_from is provided:
+        start_node := start_from
+    ELSE:
+        start_node := 0
+    ENDIF
+
+    // Initialize solution with the start node
+    solution := [start_node]
+
+    // Initialize visited array to mark nodes as visited
+    visited := [false, false, ..., false] of length size
+    visited[start_node] := true
+    
+    current_cost := points_cost[start_node]
+    
+    WHILE length of solution < solution_size
+        current_solution_length := length of solution
+        
+        min_cost := Infinity
+        min_cost_node := None
+        min_cost_position := 0
+        
+        FOR each node in 0 to size - 1
+            IF node is not visited
+                FOR each position in 0 to current_solution_length + 1
+                    cost_after_insertion := current_cost + points_cost[node]
+                    
+                    IF position == 0 OR position == current_solution_length
+                        cost_after_insertion := cost_after_insertion 
+                            - cost_matrix[solution[0]][current_solution_length - 1]
+                            + cost_matrix[solution[0]][node]
+                            + cost_matrix[solution[current_solution_length - 1]][node]
+                    ELSE
+                        cost_after_insertion := cost_after_insertion 
+                            - cost_matrix[solution[position]][position - 1]
+                            + cost_matrix[solution[position - 1]][node]
+                            + cost_matrix[solution[position]][node]
+                    ENDIF
+                    
+                    IF min_cost > cost_after_insertion 
+                        min_cost := cost_after_insertion
+                        min_cost_node := node
+                        min_cost_position := position
+                    ENDIF
+                ENDFOR
+            ENDIF
+        ENDFOR
+        
+        insert into "solution" value of "min_cost_node" at index "min_cost_position"
+        
+        current_cost := min_cost
+        visited[min_cost_node] = true
+        
+    ENDWHILE
+    
+    RETURN solution
+```
 
 ## Resutls of computatiional experiments
 
