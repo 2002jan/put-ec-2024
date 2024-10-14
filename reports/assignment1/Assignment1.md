@@ -519,5 +519,9 @@ Average cost: 51401
 
 The best solutions have been checked with the solution checker. 
 
-In both cases, the Nearest neighbor considering adding the node at all possible position turned out to yield the best solutions. Slightly worse results were obtained by the Greedy cycle algorithm. This was surprising, since Greedy cycle seems as a better heuristic. It considers the connection between the first and the last city, 
-but this makes the algorithm consider much more compressed area because at all times it wanted to optimize the whole path including the last connection.  
+Unsurprisingly, the Random algorithm turned out to be the worst. The second to last results were
+achieved by the Nearest neighbor with adding the node at the end algorithm.
+
+In both datasets, the Nearest neighbor considering adding the node at all possible position turned out to yield the best solutions. Slightly worse results were obtained by the Greedy cycle algorithm. This was surprising, since Greedy cycle seems as a better heuristic. It considers the connection between the first and the last city, 
+but this makes the algorithm consider much more compressed area because at all times it wanted to optimize the whole path including the last connection. 
+This is clearly visible on the plots, each path encompassed by the Greedy cycle algorithm is much more compressed than Nearest neighbor.   
