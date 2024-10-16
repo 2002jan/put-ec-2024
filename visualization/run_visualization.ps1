@@ -5,8 +5,8 @@ $dataset = "data/TSPB.csv"
 
 # Get outputdir  and dataset from commandline
 if ($args.Length -eq 2) {
-    $OutputDir = $args[0]
-    $dataset = $args[1]
+    $OutputDir = $args[0] # directory containing the .csv files
+    $dataset = $args[1]   # dataset for plotting (data\TSPA, data\TSPB)
 }
 
 # Check if the Python script exists
