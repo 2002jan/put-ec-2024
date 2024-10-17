@@ -2,9 +2,11 @@ use std::mem::size_of;
 use tsp_utils::cost_matrix::CostMatrix;
 use crate::TspAlgorithm;
 
-pub struct Greedy2Regret {}
+const REGRET_WEIGHT: f32 = 0.5;
 
-impl TspAlgorithm for Greedy2Regret {
+pub struct GreedyWeighted2Regret {}
+
+impl TspAlgorithm for GreedyWeighted2Regret {
     fn run(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: Option<i32>) -> Vec<i32> {
         let size = cost_matrix.size();
         let solution_size = ((size as f32) / 2.).ceil() as usize;
@@ -21,7 +23,7 @@ impl TspAlgorithm for Greedy2Regret {
         while solution.len() < solution_size {
             let current_solution_length = solution.len();
 
-            let mut max_regret = i32::MIN;
+            let mut max_score = f32::MIN;
             let mut best_node = None;
             let mut best_insert_pos: usize = 0;
             let mut new_score = 0;
@@ -62,8 +64,10 @@ impl TspAlgorithm for Greedy2Regret {
 
                 let regret = second_best_cost - best_cost;
 
-                if regret > max_regret {
-                    max_regret = regret;
+                let score = (regret as f32 * REGRET_WEIGHT ) - ((best_cost - current_cost) as f32 * (1.0 - REGRET_WEIGHT));
+
+                if score > max_score {
+                    max_score = score;
                     best_node = Some(node);
                     best_insert_pos = node_best_insert_pos;
                     new_score = best_cost;
@@ -81,10 +85,10 @@ impl TspAlgorithm for Greedy2Regret {
     }
 
     fn name() -> &'static str {
-        "Greedy Regret Heuristic with 2-Regret"
+        "Greedy Regret Heuristic with weighted 2-Regret"
     }
 
     fn snaked_name() -> &'static str {
-        "greedy_2regret"
+        "greedy_weighted_2regret"
     }
 }

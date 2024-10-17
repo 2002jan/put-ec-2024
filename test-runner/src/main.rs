@@ -6,6 +6,7 @@ use tsp_algos::greedy_heuristics::nearest_neighbor_any::NearestNeighborAnyAlgori
 use tsp_algos::greedy_heuristics::random::RandomAlgorithm;
 use tsp_algos::greedy_heuristics::nearest_neighbor_end::NearestNeighborEndAlgorithm;
 use tsp_algos::greedy_heuristics::greedy_2regret_cycle::Greedy2Regret;
+use tsp_algos::greedy_heuristics::greedy_weighted_2regret_cycle::GreedyWeighted2Regret;
 use tsp_algos::test_algorithm::test_tsp_algorithm;
 use tsp_utils::coordinate_tsp_reader::load_from_coordinate_csv;
 
@@ -45,7 +46,10 @@ fn main() {
             test_tsp_algorithm::<GreedyCycle>(&cost_matrix, &points_cost, &output_path, true);
         }
         Command::Task2 => {
+            test_tsp_algorithm::<NearestNeighborAnyAlgorithm>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<GreedyCycle>(&cost_matrix, &points_cost, &output_path, true);
             test_tsp_algorithm::<Greedy2Regret>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<GreedyWeighted2Regret>(&cost_matrix, &points_cost, &output_path, true);
         }
     }
 
