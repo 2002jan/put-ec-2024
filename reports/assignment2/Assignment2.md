@@ -21,13 +21,75 @@ The objective function is to find the route that minimizes the sum of distances 
 
 ### Greedy 2-regret heuristic 
 ```
+Initialize
 
+    Get the size of the problem.
+    Compute the half size of the solution (round up).
+    Initialize an empty solution list.
+    Initialize a visited list with all nodes marked as unvisited.
+    Select the starting node (either provided or default to node 0).
+    Mark the starting node as visited and add it to the solution.
+    Initialize the current cost with the cost of the starting node.
+
+Main Loop
+Repeat until the solution contains half of the nodes:
+
+    For each unvisited node:
+        Initialize best and second-best insertion costs for the node.
+        For each possible insertion position in the solution:
+            Compute the total cost of inserting the node at this position.
+            If inserting at position 0 or the last position, update the cost by considering the edges connecting the start and end of the solution to the new node.
+            If inserting at an intermediate position, update the cost by replacing the edges between two consecutive nodes with edges to the new node.
+        Update the best and second-best insertion costs based on the computed total cost.
+        Calculate regret as the difference between the second-best and best costs.
+        Track the node and position that provide the highest regret.
+
+Add Node with Maximum Regret
+
+    Insert the node with the highest regret at its best position in the solution.
+    Update the total cost and mark the node as visited.
+
+End Loop
+
+Return the solution.
 
 ```
 
 ### Greedy weighted 2-regret heuristic 
 ```
+Initialize
 
+    Get the size of the problem.
+    Compute the half size of the solution (round up).
+    Initialize an empty solution list.
+    Initialize a visited list with all nodes marked as unvisited.
+    Select the starting node (either provided or default to node 0).
+    Mark the starting node as visited and add it to the solution.
+    Initialize the current cost with the cost of the starting node.
+
+Main Loop
+Repeat until the solution contains half of the nodes:
+
+    For each unvisited node:
+        Initialize best and second-best insertion costs for the node.
+        For each possible insertion position in the solution:
+            Compute the total cost of inserting the node at this position.
+            If inserting at position 0 or the last position, update the cost by considering the edges connecting the start and end of the solution to the new node.
+            If inserting at an intermediate position, update the cost by replacing the edges between two consecutive nodes with edges to the new node.
+        Update the best and second-best insertion costs based on the computed total cost.
+        Calculate regret as the difference between the second-best and best costs.
+        Compute a weighted score using a formula that combines regret and the difference between the best cost and the current cost. Use a predefined constant REGRET_WEIGHT to adjust the importance of regret versus cost improvement:
+            score=(regret×REGRET_WEIGHT)−((best cost−current cost)×(1−REGRET_WEIGHT))
+        Track the node and position that provide the highest score.
+
+Add Node with Maximum Score
+
+    Insert the node with the highest score at its best position in the solution.
+    Update the total cost and mark the node as visited.
+
+End Loop
+
+Return the solution.
 ```
 
 ## Results of computational experiments
