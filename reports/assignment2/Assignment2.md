@@ -96,6 +96,15 @@ Return the solution.
 
 ### TSPA
 ```
+Results for Random Algorithm
+Min cost: 225467
+
+Results for Nearest Neighbor with adding the node at the end algorithm
+Min cost: 83182
+
+Results for Nearest neighbor insert anywhere algorithm
+Min cost: 71179
+
 Results for Greedy cycle algorithm
 Min cost: 71488
 Max cost: 74410
@@ -112,8 +121,31 @@ Max cost: 73718
 Average cost: 72148
 ```
 
+```mermaid
+---
+config:
+    xyChart:
+        width: 800
+        height: 600
+---
+xychart-beta
+    title "Minimal scores"
+    x-axis "Algorithm" [NN_end, NN_any, "Gready cycle", "Greedy regret", "Weighted regret"]
+    y-axis "Score" 60000 --> 110000
+    bar [83182, 71179, 71488, 108804, 71108]
+```
+
 ### TSPB
 ```
+Results for Random Algorithm
+Min cost: 193417
+
+Results for Nearest Neighbor with adding the node at the end algorithm
+Min cost: 52319
+
+Results for Nearest neighbor insert anywhere algorithm
+Min cost: 44417
+
 Results for Greedy cycle algorithm
 Min cost: 49001
 Max cost: 57324
@@ -128,6 +160,21 @@ Results for Greedy Regret Heuristic with weighted 2-Regret
 Min cost: 47144
 Max cost: 56747
 Average cost: 50997
+```
+
+
+```mermaid
+---
+config:
+    xyChart:
+        width: 800
+        height: 600
+---
+xychart-beta
+    title "Minimal scores"
+    x-axis "Algorithm" [NN_end, NN_any, "Gready cycle", "Greedy regret", "Weighted regret"]
+    y-axis "Score" 40000 --> 70000
+    bar [52319, 44417, 49001, 65043, 47144]
 ```
 
 ## Plots of the results 
