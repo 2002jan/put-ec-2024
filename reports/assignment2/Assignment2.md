@@ -66,7 +66,7 @@ Initialize
     Select the starting node (either provided or default to node 0).
     Mark the starting node as visited and add it to the solution.
     Initialize the current cost with the cost of the starting node.
-
+    
 Main Loop
 Repeat until the solution contains half of the nodes:
 
@@ -359,3 +359,14 @@ Average cost: 50997
 
 
 ## Conclusions
+
+The best solutions have been checked with the solution checker. 
+
+
+Using a greedy 2-regret heuristic can lead to unambiguous results. We believe that this is due to the fact that this algorithm
+only looks at regret as a criterion for selecting next node. It can lead to a very bad choice, only because two best
+options for this node are very close to each other. This is partially solved by using the weighted 2-regret method.
+In our experiments, the best results were achieved when the weights were equal. Taking into consideration both the regret and 
+the change in the cost of the objective function, mitigates the previous downside. After our experiments, we would 
+probably run greedy cycle and greedy weighted 2-regret and choose the best result, since they seem to be very close to each other.
+
