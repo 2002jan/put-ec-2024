@@ -16,7 +16,6 @@ impl<
 
         let staring_solution = SS::get_staring_solution(cost_matrix, points_cost, start_from);
 
-        vec![0]
     }
 
     fn name() -> &'static str {
