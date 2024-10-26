@@ -7,6 +7,13 @@ use tsp_algos::greedy_heuristics::random::RandomAlgorithm;
 use tsp_algos::greedy_heuristics::nearest_neighbor_end::NearestNeighborEndAlgorithm;
 use tsp_algos::greedy_heuristics::greedy_2regret_cycle::Greedy2Regret;
 use tsp_algos::greedy_heuristics::greedy_weighted_2regret_cycle::GreedyWeighted2Regret;
+use tsp_algos::local_search::greedy_starting_solution::GreedyStartingSolution;
+use tsp_algos::local_search::local_search::LocalSearch;
+use tsp_algos::local_search::neighbourhoods::two_edges_intra::TwoEdgesIntra;
+use tsp_algos::local_search::neighbourhoods::two_nodes_intra::TwoNodesIntra;
+use tsp_algos::local_search::random_starting_solution::RandomStartingSolution;
+use tsp_algos::local_search::search_types::greedy::GreedyLocalSearch;
+use tsp_algos::local_search::search_types::steepest::SteepestLocalSearch;
 use tsp_algos::test_algorithm::test_tsp_algorithm;
 use tsp_utils::coordinate_tsp_reader::load_from_coordinate_csv;
 
@@ -50,6 +57,17 @@ fn main() {
             test_tsp_algorithm::<GreedyCycle>(&cost_matrix, &points_cost, &output_path, true);
             test_tsp_algorithm::<Greedy2Regret>(&cost_matrix, &points_cost, &output_path, true);
             test_tsp_algorithm::<GreedyWeighted2Regret>(&cost_matrix, &points_cost, &output_path, true);
+        }
+        Command::Task3 => {
+            test_tsp_algorithm::<LocalSearch<GreedyLocalSearch, TwoNodesIntra, RandomStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<LocalSearch<GreedyLocalSearch, TwoEdgesIntra, RandomStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<LocalSearch<GreedyLocalSearch, TwoNodesIntra, GreedyStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<LocalSearch<GreedyLocalSearch, TwoEdgesIntra, GreedyStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
+
+            test_tsp_algorithm::<LocalSearch<SteepestLocalSearch, TwoNodesIntra, RandomStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<LocalSearch<SteepestLocalSearch, TwoEdgesIntra, RandomStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<LocalSearch<SteepestLocalSearch, TwoNodesIntra, GreedyStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<LocalSearch<SteepestLocalSearch, TwoEdgesIntra, GreedyStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
         }
     }
 

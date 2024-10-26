@@ -16,7 +16,8 @@ pub struct Args {
 #[derive(Clone, ValueEnum)]
 pub enum Command {
     Task1,
-    Task2
+    Task2,
+    Task3
 }
 
 impl Args {

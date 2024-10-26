@@ -1,5 +1,4 @@
-use rand::seq::SliceRandom;
-use rand::thread_rng;
+use rand::{thread_rng, Rng};
 use tsp_utils::cost_matrix::CostMatrix;
 use tsp_utils::evaluate_solution::evaluate_solution;
 use crate::greedy_heuristics::greedy_cycle::GreedyCycle;
@@ -12,12 +11,13 @@ use crate::TspAlgorithm;
 pub struct GreedyStartingSolution;
 
 impl StartingSolution for GreedyStartingSolution {
-    fn get_staring_solution(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: Option<i32>) -> Vec<i32> {
-        let size = cost_matrix.size();
+    fn get_staring_solution(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: Option<i32>) -> Vec<usize> {
 
         let start_node = start_from.unwrap_or_else(|| {
+            let size = cost_matrix.size();
+
             let mut rng = thread_rng();
-            (0..size as i32).collect::<Vec<i32>>().choose(&mut rng).unwrap_or(&0).to_owned()
+            rng.gen_range(0..size as i32)
         });
 
         let greedy_cycle_solution = GreedyCycle::run(cost_matrix, points_cost, Some(start_node));
@@ -36,7 +36,6 @@ impl StartingSolution for GreedyStartingSolution {
             nearest_neighbor_solution
         };
 
-        best_solution
-
+        best_solution.iter().map(|&x| x as usize).collect::<Vec<usize>>()
     }
 }

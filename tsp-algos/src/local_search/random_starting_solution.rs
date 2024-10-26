@@ -6,12 +6,12 @@ use crate::local_search::local_search::StartingSolution;
 pub struct RandomStartingSolution;
 
 impl StartingSolution for RandomStartingSolution {
-    fn get_staring_solution(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: Option<i32>) -> Vec<i32> {
+    fn get_staring_solution(cost_matrix: &CostMatrix, _: &Vec<i32>, _: Option<i32>) -> Vec<usize> {
         let size = cost_matrix.size();
         let solution_size = ((size as f32) / 2.).ceil() as i32;
-        let mut nodes: Vec<i32> = (0..solution_size as i32).collect::<Vec<i32>>();
+        let mut nodes: Vec<i32> = (0..solution_size).collect::<Vec<i32>>();
         nodes.shuffle(&mut thread_rng());
 
-        nodes
+        nodes.iter().map(|&x| x as usize).collect::<Vec<usize>>()
     }
 }
