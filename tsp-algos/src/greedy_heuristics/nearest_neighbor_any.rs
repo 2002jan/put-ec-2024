@@ -62,11 +62,11 @@ impl TspAlgorithm for NearestNeighborAnyAlgorithm {
         solution.iter().map(|x| *x as i32).collect()
     }
 
-    fn name() -> &'static str {
-        "Nearest neighbor insert anywhere algorithm"
+    fn name() -> String {
+        String::from("Nearest neighbor insert anywhere algorithm")
     }
 
-    fn snaked_name() -> &'static str {
-        "nearest_neighbor_any_algorithm"
+    fn snaked_name() -> String {
+        String::from("nearest_neighbor_any_algorithm")
     }
 }

@@ -63,11 +63,11 @@ impl TspAlgorithm for GreedyCycle {
         solution.iter().map(|x| *x as i32).collect()
     }
 
-    fn name() -> &'static str {
-        "Greedy cycle algorithm"
+    fn name() -> String {
+        String::from("Greedy cycle algorithm")
     }
 
-    fn snaked_name() -> &'static str {
-        "greedy_cycle"
+    fn snaked_name() -> String {
+        String::from("greedy_cycle")
     }
 }

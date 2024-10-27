@@ -36,4 +36,12 @@ impl LocalSearchNeighbourhood for TwoEdgesIntra {
             current_solution[i] = new_order[i - start];
         }
     }
+
+    fn name() -> String {
+        String::from("Two Edges Intra")
+    }
+
+    fn snaked_name() -> String {
+        String::from("two_edges_intra")
+    }
 }

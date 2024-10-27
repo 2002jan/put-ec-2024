@@ -95,4 +95,12 @@ impl LocalSearchType for SteepestLocalSearch {
             Some(Inter(self.current_start, self.next_inter_target - 1))
         }
     }
+
+    fn name() -> String {
+        String::from("Steepest")
+    }
+
+    fn snaked_name() -> String {
+        String::from("steepest")
+    }
 }

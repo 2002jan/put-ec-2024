@@ -19,11 +19,11 @@ impl TspAlgorithm for RandomAlgorithm {
         solution
     }
 
-    fn name() -> &'static str {
-        "Random Algorithm"
+    fn name() -> String {
+        String::from("Random Algorithm")
     }
 
-    fn snaked_name() -> &'static str {
-        "random_algorithm"
+    fn snaked_name() -> String {
+        String::from("random_algorithm")
     }
 }

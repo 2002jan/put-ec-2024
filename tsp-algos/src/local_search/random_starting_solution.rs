@@ -14,4 +14,12 @@ impl StartingSolution for RandomStartingSolution {
 
         nodes.iter().map(|&x| x as usize).collect::<Vec<usize>>()
     }
+
+    fn name() -> String {
+        String::from("Random Start")
+    }
+
+    fn snaked_name() -> String {
+        String::from("random_start")
+    }
 }

@@ -48,11 +48,11 @@ impl TspAlgorithm for NearestNeighborEndAlgorithm {
         solution
     }
 
-    fn name() -> &'static str {
-        "Nearest Neighbor with adding the node at the end algorithm"
+    fn name() -> String {
+        String::from("Nearest Neighbor with adding the node at the end algorithm")
     }
 
-    fn snaked_name() -> &'static str {
-        "nearest_neighbor_end_algorithm"
+    fn snaked_name() -> String {
+        String::from("nearest_neighbor_end_algorithm")
     }
 }

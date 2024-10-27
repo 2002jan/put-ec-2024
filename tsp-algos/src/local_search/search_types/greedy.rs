@@ -149,4 +149,12 @@ impl LocalSearchType for GreedyLocalSearch {
             }
         }
     }
+
+    fn name() -> String {
+        String::from("Greedy")
+    }
+
+    fn snaked_name() -> String {
+        String::from("greedy")
+    }
 }

@@ -84,11 +84,11 @@ impl TspAlgorithm for GreedyWeighted2Regret {
         solution.iter().map(|x| *x as i32).collect()
     }
 
-    fn name() -> &'static str {
-        "Greedy Regret Heuristic with weighted 2-Regret"
+    fn name() -> String {
+        String::from("Greedy Regret Heuristic with weighted 2-Regret")
     }
 
-    fn snaked_name() -> &'static str {
-        "greedy_weighted_2regret"
+    fn snaked_name() -> String {
+        String::from("greedy_weighted_2regret")
     }
 }

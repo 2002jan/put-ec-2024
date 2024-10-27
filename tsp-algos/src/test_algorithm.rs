@@ -1,4 +1,5 @@
 use std::path::PathBuf;
+use std::time::Instant;
 use tsp_utils::cost_matrix::CostMatrix;
 use tsp_utils::evaluate_solution::evaluate_solution;
 use tsp_utils::output_writer::write_output;
@@ -12,6 +13,8 @@ pub fn test_tsp_algorithm<Algorithm: TspAlgorithm>(cost_matrix: &CostMatrix, poi
     let mut max_cost = 0;
     let mut max_solution = vec![0];
     let mut aggregated_cost = 0;
+
+    let start = Instant::now();
 
     for starting_point in 0..problem_size as i32 {
         let solution = Algorithm::run(&cost_matrix, &points_cost, Option::from(starting_point));
@@ -30,6 +33,9 @@ pub fn test_tsp_algorithm<Algorithm: TspAlgorithm>(cost_matrix: &CostMatrix, poi
         aggregated_cost += cost;
     }
 
+    let duration = start.elapsed();
+
+
     if let Some(path) = output_path {
         let min_output_path = path.join(format!("{}_min_score_output.csv", Algorithm::snaked_name()));
         let max_output_path = path.join(format!("{}_max_score_output.csv", Algorithm::snaked_name()));
@@ -43,6 +49,12 @@ pub fn test_tsp_algorithm<Algorithm: TspAlgorithm>(cost_matrix: &CostMatrix, poi
 
     if verbose {
         println!("Results for {}\nMin cost: {}\nMax cost: {}\nAverage cost: {}\n", Algorithm::name(), min_cost, max_cost, aggregated_cost);
+
+        let duration_micros = duration.as_micros();
+        let duration_per_run = duration_micros / (problem_size as u128);
+
+        println!("Time took for {} runs: {:.8}s, time per run: {}μs\n", problem_size, duration.as_secs_f64(), duration_per_run);
+        println!("Best solution:\n{:?}\n", min_solution);
     }
 
     (min_cost, max_cost, aggregated_cost)

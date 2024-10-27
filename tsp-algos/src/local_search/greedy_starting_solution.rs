@@ -38,4 +38,12 @@ impl StartingSolution for GreedyStartingSolution {
 
         best_solution.iter().map(|&x| x as usize).collect::<Vec<usize>>()
     }
+
+    fn name() -> String {
+        String::from("Greedy Start")
+    }
+
+    fn snaked_name() -> String {
+        String::from("greedy_start")
+    }
 }

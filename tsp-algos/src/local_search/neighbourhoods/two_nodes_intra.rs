@@ -46,4 +46,12 @@ impl LocalSearchNeighbourhood for TwoNodesIntra {
         current_solution[start] = current_solution[target];
         current_solution[target] = buffer;
     }
+
+    fn name() -> String {
+        String::from("Two Nodes Intra")
+    }
+
+    fn snaked_name() -> String {
+        String::from("two_nodes_intra")
+    }
 }

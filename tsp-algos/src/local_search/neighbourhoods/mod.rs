@@ -46,4 +46,8 @@ pub trait LocalSearchNeighbourhood {
         current_solution[start] = free_nodes[target];
         free_nodes[target] = buffer;
     }
+
+    fn name() -> String;
+
+    fn snaked_name() -> String;
 }

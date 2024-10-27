@@ -9,4 +9,7 @@ pub trait LocalSearchType {
     fn run<N: LocalSearchNeighbourhood> (cost_matrix: &CostMatrix, points_cost: &Vec<i32>, starting_solution: Vec<usize>) -> Vec<usize>;
 
     fn next(&mut self) -> Option<LocalSearchMove>;
+
+    fn name() -> String;
+    fn snaked_name() -> String;
 }

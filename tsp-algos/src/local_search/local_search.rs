@@ -11,7 +11,7 @@ pub struct LocalSearch<
 > {
     t: PhantomData<T>,
     n: PhantomData<N>,
-    ss: PhantomData<SS>
+    ss: PhantomData<SS>,
 }
 
 impl<
@@ -20,22 +20,24 @@ impl<
     SS: StartingSolution
 > TspAlgorithm for LocalSearch<T, N, SS> {
     fn run(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: Option<i32>) -> Vec<i32> {
-
         let staring_solution = SS::get_staring_solution(cost_matrix, points_cost, start_from);
 
         T::run::<N>(cost_matrix, points_cost, staring_solution).iter().map(|&x| x as i32).collect()
     }
 
-    fn name() -> &'static str {
-        "Local Search"
+    fn name() -> String {
+        SS::name() + " " + N::name().as_str() + " " + T::name().as_str() + " " + "Local Search"
     }
 
-    fn snaked_name() -> &'static str {
-        "local_search"
+    fn snaked_name() -> String {
+        SS::snaked_name() + "_" + N::snaked_name().as_str() + "_" + T::snaked_name().as_str() + "_" + "local_search"
     }
 }
 
 
 pub trait StartingSolution {
     fn get_staring_solution(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: Option<i32>) -> Vec<usize>;
+
+    fn name() -> String;
+    fn snaked_name() -> String;
 }
