@@ -76,6 +76,8 @@ if __name__ == '__main__':
 
     # get the filename from args
     filename = sys.argv[1]
+    if "min" not in filename:
+        exit()
     algorithm = filename.split('\\')[-1].split('_score')[0].capitalize()
     node_indices = pd.read_csv(f'{filename}', header=None)
 
