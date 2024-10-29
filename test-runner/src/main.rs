@@ -14,6 +14,7 @@ use tsp_algos::local_search::neighbourhoods::two_nodes_intra::TwoNodesIntra;
 use tsp_algos::local_search::random_starting_solution::RandomStartingSolution;
 use tsp_algos::local_search::search_types::greedy::GreedyLocalSearch;
 use tsp_algos::local_search::search_types::steepest::SteepestLocalSearch;
+use tsp_algos::local_search::search_types::steepest_candidate::SteepestCandidateLocalSearch;
 use tsp_algos::test_algorithm::test_tsp_algorithm;
 use tsp_utils::coordinate_tsp_reader::load_from_coordinate_csv;
 
@@ -68,6 +69,10 @@ fn main() {
             test_tsp_algorithm::<LocalSearch<SteepestLocalSearch, TwoEdgesIntra, RandomStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
             test_tsp_algorithm::<LocalSearch<SteepestLocalSearch, TwoNodesIntra, GreedyStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
             test_tsp_algorithm::<LocalSearch<SteepestLocalSearch, TwoEdgesIntra, GreedyStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
+        }
+        Command::Task4 => {
+            test_tsp_algorithm::<LocalSearch<SteepestCandidateLocalSearch, TwoEdgesIntra, RandomStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
+            test_tsp_algorithm::<LocalSearch<SteepestLocalSearch, TwoEdgesIntra, RandomStartingSolution>>(&cost_matrix, &points_cost, &output_path, true);
         }
     }
 

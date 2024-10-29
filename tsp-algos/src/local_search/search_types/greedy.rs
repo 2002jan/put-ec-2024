@@ -21,7 +21,7 @@ pub struct GreedyLocalSearch {
 }
 
 impl LocalSearchType for GreedyLocalSearch {
-    fn new(solution_size: usize, free_nodes_size: usize) -> impl LocalSearchType {
+    fn new(solution_size: usize, free_nodes_size: usize) -> Self {
         let mut thread_rng = thread_rng();
 
         let mut start_order = (0..solution_size).collect::<Vec<usize>>();

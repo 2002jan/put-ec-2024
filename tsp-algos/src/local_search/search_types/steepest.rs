@@ -15,7 +15,7 @@ pub struct SteepestLocalSearch {
 
 
 impl LocalSearchType for SteepestLocalSearch {
-    fn new(solution_size: usize, free_nodes_size: usize) -> impl LocalSearchType {
+    fn new(solution_size: usize, free_nodes_size: usize) -> Self {
         SteepestLocalSearch {
             current_start: 0,
             next_start: 0,

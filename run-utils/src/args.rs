@@ -17,7 +17,8 @@ pub struct Args {
 pub enum Command {
     Task1,
     Task2,
-    Task3
+    Task3,
+    Task4
 }
 
 impl Args {
