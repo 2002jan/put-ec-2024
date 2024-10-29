@@ -1,5 +1,5 @@
 use std::cmp::Ordering;
-use std::collections::{BinaryHeap, HashSet};
+use std::collections::{BinaryHeap, HashMap, HashSet};
 use std::mem::size_of;
 use tsp_utils::cost_matrix::CostMatrix;
 use tsp_utils::get_neighbouring_indexes;
@@ -37,14 +37,13 @@ pub struct SteepestCandidateLocalSearch {
     current_start: usize,
     next_start: usize,
     next_closest_node: usize,
-    current_closest_nodes: Vec<usize>,
     nodes_in_solution: HashSet<usize>,
     current_start_next_index: Option<usize>,
     intra_size: usize
 }
 
 impl SteepestCandidateLocalSearch {
-    fn next_candidate(&mut self, cost_matrix: &CostMatrix, points_cost: &Vec<i32>, current_solution: &Vec<usize>, free_nodes: &Vec<usize>) -> Option<LocalSearchMove> {
+    fn next_candidate(&mut self, current_solution: &Vec<usize>, free_nodes: &Vec<usize>, closest_nodes: &HashMap<usize, [usize; CLOSEST_CANDIDATES]>) -> Option<LocalSearchMove> {
         if self.next_closest_node >= CLOSEST_CANDIDATES || self.next_start == 0 {
             if self.next_start == 0 {
                 for item in current_solution {
@@ -59,27 +58,9 @@ impl SteepestCandidateLocalSearch {
             if self.current_start >= current_solution.len() {
                 return None;
             }
-
-            let mut candidates_heap = BinaryHeap::new();
-            let current_start_node = current_solution[self.current_start];
-
-            for neighbour in 0..cost_matrix.size() {
-                if neighbour == self.current_start {
-                    continue;
-                }
-
-                candidates_heap.push(CandidateNode {
-                    distance: cost_matrix.get(current_start_node, neighbour) + points_cost[neighbour],
-                    node: neighbour
-                });
-            }
-
-            for i in 0..CLOSEST_CANDIDATES {
-                self.current_closest_nodes[i] = candidates_heap.pop()?.node;
-            }
         }
 
-        let candidate = self.current_closest_nodes[self.next_closest_node];
+        let candidate = closest_nodes[&self.current_start][self.next_closest_node];
 
         let start;
 
@@ -126,7 +107,6 @@ impl LocalSearchType for SteepestCandidateLocalSearch {
             current_start: 0,
             next_start: 0,
             next_closest_node: 0,
-            current_closest_nodes: vec![0; CLOSEST_CANDIDATES],
             nodes_in_solution: nodes_in_solution_set,
             current_start_next_index: None,
             intra_size: solution_size
@@ -145,6 +125,30 @@ impl LocalSearchType for SteepestCandidateLocalSearch {
 
         let solution_size = current_solution.len();
         let free_nodes_size = free_nodes.len();
+        let mut closest_nodes: HashMap<usize, [usize; CLOSEST_CANDIDATES]> = HashMap::new();
+
+        for node in 0..cost_matrix.size() {
+            let mut candidates_heap = BinaryHeap::new();
+
+            for neighbour in 0..cost_matrix.size() {
+                if neighbour == node {
+                    continue;
+                }
+
+                candidates_heap.push(CandidateNode {
+                    distance: cost_matrix.get(node, neighbour) + points_cost[neighbour],
+                    node: neighbour
+                });
+            }
+
+            let mut closest_nodes_list = [0; CLOSEST_CANDIDATES];
+
+            for i in 0..CLOSEST_CANDIDATES {
+                closest_nodes_list[i] = candidates_heap.pop().unwrap().node;
+            }
+
+            closest_nodes.insert(node, closest_nodes_list);
+        }
 
         loop {
             let mut neighbourhood_iterator = Self::new(solution_size, free_nodes_size);
@@ -153,7 +157,7 @@ impl LocalSearchType for SteepestCandidateLocalSearch {
             let mut bets_move: Option<LocalSearchMove> = None;
 
             loop {
-                let next_move = neighbourhood_iterator.next_candidate(cost_matrix, points_cost, &current_solution, &free_nodes);
+                let next_move = neighbourhood_iterator.next_candidate(&current_solution, &free_nodes, &closest_nodes);
 
                 let next_move = match next_move {
                     None => {
