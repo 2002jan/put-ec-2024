@@ -38,12 +38,12 @@ pub struct SteepestCandidateLocalSearch {
     next_start: usize,
     next_closest_node: usize,
     nodes_in_solution: HashSet<usize>,
-    current_start_next_index: Option<usize>,
-    intra_size: usize
+    current_start_next_move: Option<LocalSearchMove>,
+    intra_size: usize,
 }
 
 impl SteepestCandidateLocalSearch {
-    fn next_candidate(&mut self, current_solution: &Vec<usize>, free_nodes: &Vec<usize>, closest_nodes: &HashMap<usize, [usize; CLOSEST_CANDIDATES]>) -> Option<LocalSearchMove> {
+    fn next_candidate(&mut self, current_solution: &Vec<usize>, closest_nodes: &HashMap<usize, [usize; CLOSEST_CANDIDATES]>, nodes_position: &HashMap<usize, (bool, usize)>) -> Option<LocalSearchMove> {
         if self.next_closest_node >= CLOSEST_CANDIDATES || self.next_start == 0 {
             if self.next_start == 0 {
                 for item in current_solution {
@@ -60,41 +60,25 @@ impl SteepestCandidateLocalSearch {
             }
         }
 
-        let candidate = closest_nodes[&self.current_start][self.next_closest_node];
-
-        let start;
-
-        if self.nodes_in_solution.contains(&candidate){
-            start = self.current_start;
-            self.next_closest_node += 1;
-        } else {
-            start = match self.current_start_next_index {
-                None => {
-                    let (prev, next) = get_neighbouring_indexes(self.current_start, self.intra_size);
-                    self.current_start_next_index = Some(next);
-
-                    prev
-                }
-                Some(next) => {
-                    self.next_closest_node += 1;
-
-                    next
-                }
-            };
+        if let Some(mov) = self.current_start_next_move.take() {
+            return Some(mov);
         }
 
+        let candidate = closest_nodes[&self.current_start][self.next_closest_node];
 
+        let (prev, next) = get_neighbouring_indexes(self.current_start, self.intra_size);
+        self.next_closest_node += 1;
 
-        if self.nodes_in_solution.contains(&candidate) {
-            let target_pos = current_solution.iter().position(|&x| x == candidate).unwrap();
+        let (in_solution, target_pos) = nodes_position[&candidate];
 
-            if target_pos > start {
-                Some(Intra(start, target_pos))
-            } else {
-                Some(Intra(target_pos, start))
-            }
+        if in_solution {
+            self.current_start_next_move = Some(Intra(next, target_pos));
+
+            Some(Intra(target_pos, prev))
         } else {
-            Some(Inter(start, free_nodes.iter().position(|&x| x == candidate).unwrap()))
+            self.current_start_next_move = Some(Inter(next, target_pos));
+
+            Some(Inter(prev, target_pos))
         }
     }
 }
@@ -108,8 +92,8 @@ impl LocalSearchType for SteepestCandidateLocalSearch {
             next_start: 0,
             next_closest_node: 0,
             nodes_in_solution: nodes_in_solution_set,
-            current_start_next_index: None,
-            intra_size: solution_size
+            current_start_next_move: None,
+            intra_size: solution_size,
         }
     }
 
@@ -137,7 +121,7 @@ impl LocalSearchType for SteepestCandidateLocalSearch {
 
                 candidates_heap.push(CandidateNode {
                     distance: cost_matrix.get(node, neighbour) + points_cost[neighbour],
-                    node: neighbour
+                    node: neighbour,
                 });
             }
 
@@ -156,8 +140,18 @@ impl LocalSearchType for SteepestCandidateLocalSearch {
             let mut best_change = 0;
             let mut bets_move: Option<LocalSearchMove> = None;
 
+            let mut nodes_poses: HashMap<usize, (bool, usize)> = HashMap::new();
+
+            for (i, node) in current_solution.iter().enumerate() {
+                    nodes_poses.insert(*node, (true, i));
+            }
+
+            for (i, node) in free_nodes.iter().enumerate() {
+                nodes_poses.insert(*node, (false, i));
+            }
+
             loop {
-                let next_move = neighbourhood_iterator.next_candidate(&current_solution, &free_nodes, &closest_nodes);
+                let next_move = neighbourhood_iterator.next_candidate(&current_solution, &closest_nodes, &nodes_poses);
 
                 let next_move = match next_move {
                     None => {
