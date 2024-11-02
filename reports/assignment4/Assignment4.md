@@ -36,6 +36,13 @@ Return Random Solution:
 
 # Table of the results
 
+<style>
+    .heatMap tr:nth-last-child(-n+2) {
+        background-color: rgb(204, 204, 204); 
+    }
+</style>
+
+<div class="heatMap">
 
 |                                                 | TSPA                | TSPB                |
 |-------------------------------------------------|---------------------|---------------------|
@@ -48,6 +55,37 @@ Return Random Solution:
 | Greedy Start Two Edges Intra Steepest           | 71677 (70397-72984) | 45008 (43958-50901) |
 | Random Start Two Edges Intra Steepest           | 75326 (72938-80126) | 49725 (46957-52832) |
 | Random Start Two Edges Intra Steepest Candidate | 79763 (74876-84144) | 51500 (47433-58226) |
+
+</div>
+
+```mermaid
+---
+config:
+xyChart:
+width: 800
+height: 600
+---
+xychart-beta
+title "Minimal scores for TSPA"
+x-axis "Algorithm" ["RNG", "REG", "GNG", GEG, RNS, GNS, GES, RES, Candidate]
+y-axis "Score" 60000 --> 84000
+bar [82039,77907,70602,70004,81178,71041,70397,72938,74876]
+```
+
+```mermaid
+---
+config:
+xyChart:
+width: 800
+height: 600
+---
+xychart-beta
+title "Minimal scores for TSPB"
+x-axis "Algorithm" ["RNG", "REG", "GNG", GEG, RNS, GNS, GES, RES, Candidate]
+y-axis "Score" 42000 --> 57000
+bar [53396,45665,43826,43790,56112,43862,43958,46957,47433]
+```
+
 
 ## Results of previous algorithms
 
@@ -68,9 +106,6 @@ Return Random Solution:
 
 # Table of execution times in microseconds (μs)
 
-
-
-
 | Algorithm                                       | TSPA  | TSPB  |
 |-------------------------------------------------|-------|-------|
 | Random Start Two Nodes Intra Greedy             | 7634  | 7254  |
@@ -81,7 +116,22 @@ Return Random Solution:
 | Greedy Start Two Nodes Intra Steepest           | 12350 | 12597 |
 | Greedy Start Two Edges Intra Steepest           | 12498 | 12690 |
 | Random Start Two Edges Intra Steepest           | 18214 | 18860 |
-| Random Start Two Edges Intra Steepest Candidate | 10118 | 9826  |
+| Random Start Two Edges Intra Steepest Candidate | 9225  | 9826  |
+
+```mermaid
+---
+config:
+xyChart:
+width: 800
+height: 600
+---
+xychart-beta
+title "Execution times in microseconds (μs)"
+x-axis "Algorithm" ["RNG", "REG", "GNG", GEG, RNS, GNS, GES, RES, Candidate]
+y-axis "Score" 5000 --> 30000
+bar [7634,5436,13122,13836,27127,12350,12498,18214,9225]
+```
+
 
 ## Results of Steepest local search with various candidate numbers
 
@@ -94,6 +144,34 @@ Return Random Solution:
 | 15               | 77352 (72737-83065) | 12341     | 50184 (47530-54007) | 13675      |
 | 20               | 75334 (72712-78897) | 16719     | 49695 (46125-53846) | 16775      |
 | 25               | 74471 (71867-79526) | 19913     | 49393 (46085-53298) | 20595      |
+
+```mermaid
+---
+config:
+xyChart:
+width: 800
+height: 600
+---
+xychart-beta
+title "Results depending on number of candidates for TSPA"
+x-axis "Number of candidates" ["5","7","10","12","15","20"]
+y-axis "Score" 70000 --> 85000
+bar [80902,77893,74876,74322,72737,72712,71867]
+```
+
+```mermaid
+---
+config:
+xyChart:
+width: 800
+height: 600
+---
+xychart-beta
+title "Results depending on number of candidates for TSPB"
+x-axis "Number of candidates" ["5","7","10","12","15","20"]
+y-axis "Score" 44000 --> 53000
+bar [51131, 48933, 47433, 47393,47530, 46125, 46085]
+```
 
 # Raw results
 ## TSPA
@@ -162,3 +240,7 @@ Best solution:
 
 # Conclusions
 
+As we predicted, the introduction of candidate moves limited the neighbourhood which slightly worsened
+the score, however it significantly improved the execution time. It is almost twice as fast as regular Steepest
+local search with two edge exchange and random starting solution. It turns out that introducing more candidates
+makes the score better, because broaden the search space. However, reaching 25 candidates makes the execution time equal as that of steepest local search.
