@@ -34,6 +34,60 @@ Return Random Solution:
 
 ## Steepest local search with the use of candidate moves
 
+```
+Define Constants and Data Structures:
+    Set a constant CLOSEST_CANDIDATES representing the number of closest nodes to consider for each candidate move.
+    Create a CandidateNode structure to represent a node and its distance, used to order candidate nodes by distance in a priority queue.
+
+Define the SteepestCandidateLocalSearch Structure:
+    Track the current_start index for nodes in the solution being examined.
+    Track next_start and next_closest_node for iterating through solution nodes and their closest candidates.
+    Use nodes_in_solution as a set to store nodes currently in the solution.
+    Maintain current_start_next_move as an optional field to temporarily store the next move for current_start.
+    Set intra_size as the size of the current solution to support indexing functions.
+
+Define the next_candidate Function:
+    If next_closest_node has exhausted the list of closest candidates or next_start is zero, update the search state:
+        Add nodes from current_solution to nodes_in_solution if next_start is zero (only needed once at the start).
+        Set current_start to next_start and increment next_start.
+        Reset next_closest_node to zero.
+        If current_start exceeds the length of current_solution, return None, indicating no more candidates.
+    If current_start_next_move has a pending move, return it and reset the field.
+    Retrieve the candidate node from the closest nodes for current_start.
+    Compute the neighboring indices (prev, next) for current_start in the solution cycle.
+    Retrieve (in_solution, target_pos) to check if candidate is part of the current solution and locate its position.
+    Based on in_solution:
+        If True, set current_start_next_move to an "Intra" move (within solution) and return the corresponding LocalSearchMove.
+        If False, set current_start_next_move to an "Inter" move (between solution and free nodes) and return the LocalSearchMove.
+
+Define the run Function:
+    Initialize current_solution as starting_solution.
+    Identify free_nodes as nodes not in the current_solution.
+    Compute solution_size and free_nodes_size as the sizes of current_solution and free_nodes.
+    Build closest_nodes, a map that stores the CLOSEST_CANDIDATES nearest nodes for each node in the problem:
+        For each node, create a max-heap of CandidateNodes to prioritize closest neighbors by distance.
+        Populate the heap with distances (adding points_cost for each neighbor).
+        Retrieve the top CLOSEST_CANDIDATES nodes and store them in closest_nodes for fast lookup.
+
+Local Search Loop:
+    Repeat until no improving moves are found:
+        Create a new neighbourhood_iterator of SteepestCandidateLocalSearch.
+        Initialize best_change to zero and best_move as None to track the best candidate move.
+        Create nodes_poses to map each node’s position and whether it’s in current_solution or free_nodes.
+        Inner Loop: Iterate Over Candidates:
+            Use neighbourhood_iterator.next_candidate to get the next candidate move:
+                If None, break the inner loop as there are no more candidates.
+            Evaluate the change in cost of applying next_move using the evaluate_move function.
+            If change improves on best_change, update best_change and set best_move to next_move.
+        If best_move was found, apply it to current_solution and free_nodes using apply_move.
+        If no improving move is found, exit the loop.
+
+Return Final Solution:
+    Once no improving moves are found, return current_solution as the locally optimized solution.
+
+
+```
+
 # Table of the results
 
 <style>
