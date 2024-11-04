@@ -44,6 +44,10 @@ pub struct SteepestCandidateLocalSearch {
 
 impl SteepestCandidateLocalSearch {
     fn next_candidate(&mut self, current_solution: &Vec<usize>, closest_nodes: &HashMap<usize, [usize; CLOSEST_CANDIDATES]>, nodes_position: &HashMap<usize, (bool, usize)>) -> Option<LocalSearchMove> {
+        if let Some(mov) = self.current_start_next_move.take() {
+            return Some(mov);
+        }
+
         if self.next_closest_node >= CLOSEST_CANDIDATES || self.next_start == 0 {
             if self.next_start == 0 {
                 for item in current_solution {
@@ -60,9 +64,6 @@ impl SteepestCandidateLocalSearch {
             }
         }
 
-        if let Some(mov) = self.current_start_next_move.take() {
-            return Some(mov);
-        }
 
         let candidate = closest_nodes[&self.current_start][self.next_closest_node];
 
