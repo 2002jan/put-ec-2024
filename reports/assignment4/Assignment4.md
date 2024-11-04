@@ -98,7 +98,7 @@ Return Final Solution:
 
 <div class="heatMap">
 
-|                                                 | TSPA                | TSPB                |
+|        Algorithm                                         | TSPA                | TSPB                |
 |-------------------------------------------------|---------------------|---------------------|
 | Random Start Two Nodes Intra Greedy             | 86727 (82039-95867) | 61477 (53396-67230) |
 | Random Start Two Edges Intra Greedy             | 74035 (77907-82039) | 48390 (45665-51760) |
