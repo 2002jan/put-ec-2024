@@ -4,7 +4,7 @@ use crate::local_search::neighbourhoods::{LocalSearchMove, LocalSearchNeighbourh
 pub mod greedy;
 pub mod steepest;
 pub mod steepest_candidate;
-mod steepest_deltas;
+pub mod steepest_deltas;
 
 pub trait LocalSearchType {
     fn new(solution_size: usize, free_nodes_size: usize) -> Self;

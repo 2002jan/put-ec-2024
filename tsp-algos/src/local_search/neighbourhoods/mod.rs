@@ -1,8 +1,10 @@
 pub mod two_nodes_intra;
 pub mod two_edges_intra;
 
+use std::collections::LinkedList;
 use tsp_utils::cost_matrix::CostMatrix;
 use tsp_utils::get_neighbouring_indexes;
+use crate::local_search::neighbourhoods::LocalSearchMove::{Inter, Intra};
 
 pub enum LocalSearchMove {
     Intra(usize, usize),
@@ -46,6 +48,39 @@ pub trait LocalSearchNeighbourhood {
         current_solution[start] = free_nodes[target];
         free_nodes[target] = buffer;
     }
+
+    ///Should be called after applying the move
+    fn get_new_moves(mov: &LocalSearchMove, solution_size: usize, free_nodes_size: usize) -> LinkedList<LocalSearchMove>{
+        match  mov{
+            Intra(start, target) => Self::get_new_moves_intra(*start, *target, solution_size, free_nodes_size),
+            Inter(start, target) => Self::get_new_moves_inter(*start, *target, solution_size, free_nodes_size)
+        }
+    }
+
+    fn get_new_moves_inter(start: usize, target: usize, solution_size: usize, free_nodes_size: usize) -> LinkedList<LocalSearchMove>{
+        let mut new_moves: LinkedList<LocalSearchMove> = LinkedList::new();
+
+        for i in 0..solution_size {
+            new_moves.push_back(Inter(i, target));
+
+            if i != start {
+                new_moves.push_back(Intra(start, i));
+                new_moves.push_back(Intra(i, start));
+            }
+        }
+
+        let (start_prev, start_next) = get_neighbouring_indexes(start, solution_size);
+
+        for i in 0..free_nodes_size {
+            new_moves.push_back(Inter(start, i));
+            new_moves.push_back(Inter(start_prev, i));
+            new_moves.push_back(Inter(start_next, i));
+        }
+
+        new_moves
+    }
+
+    fn get_new_moves_intra(start: usize, target: usize, solution_size: usize, free_nodes_size: usize) -> LinkedList<LocalSearchMove>;
 
     fn name() -> String;
 

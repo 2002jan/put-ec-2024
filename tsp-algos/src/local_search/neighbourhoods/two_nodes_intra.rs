@@ -1,6 +1,7 @@
+use std::collections::LinkedList;
 use tsp_utils::cost_matrix::CostMatrix;
 use tsp_utils::get_neighbouring_indexes;
-use crate::local_search::neighbourhoods::LocalSearchNeighbourhood;
+use crate::local_search::neighbourhoods::{LocalSearchMove, LocalSearchNeighbourhood};
 
 pub struct TwoNodesIntra {}
 
@@ -45,6 +46,10 @@ impl LocalSearchNeighbourhood for TwoNodesIntra {
         let buffer = current_solution[start];
         current_solution[start] = current_solution[target];
         current_solution[target] = buffer;
+    }
+
+    fn get_new_moves_intra(_start: usize, _target: usize, _solution_size: usize, _free_nodes_size: usize) -> LinkedList<LocalSearchMove> {
+        panic!("Not implemented yet (never will be)")
     }
 
     fn name() -> String {
