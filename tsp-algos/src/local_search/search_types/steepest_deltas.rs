@@ -1,8 +1,7 @@
 use std::cmp::Ordering;
-use std::collections::{BinaryHeap, HashMap, LinkedList};
+use std::collections::{BTreeMap, HashMap, LinkedList};
 use std::mem::size_of;
 use tsp_utils::cost_matrix::CostMatrix;
-use tsp_utils::evaluate_solution::evaluate_solution;
 use tsp_utils::get_neighbouring_indexes;
 use crate::local_search::neighbourhoods::{LocalSearchMove, LocalSearchNeighbourhood};
 use crate::local_search::neighbourhoods::LocalSearchMove::{Inter, Intra};
@@ -113,7 +112,7 @@ enum ImprovingMove {
 }
 
 pub struct SteepestDeltasLocalSearch {
-    improving_moves: BinaryHeap<ImprovingMoveWrapper>,
+    improving_moves: BTreeMap<i32, ImprovingMoveWrapper>,
 }
 
 impl SteepestDeltasLocalSearch {
@@ -134,7 +133,7 @@ impl SteepestDeltasLocalSearch {
                 let change = N::evaluate_move(cost_matrix, points_cost, &mov, current_solution, free_nodes);
 
                 if change < 0 {
-                    self.improving_moves.push(ImprovingMoveWrapper {
+                    self.improving_moves.insert(change, ImprovingMoveWrapper {
                         delta: change,
                         mov: ImprovingIntraMove(
                             current_solution[start],
@@ -142,7 +141,7 @@ impl SteepestDeltasLocalSearch {
                             current_solution[target],
                             current_solution[target_next],
                         ),
-                    })
+                    });
                 }
             }
 
@@ -151,7 +150,7 @@ impl SteepestDeltasLocalSearch {
                 let change = N::evaluate_move(cost_matrix, points_cost, &mov, current_solution, free_nodes);
 
                 if change < 0 {
-                    self.improving_moves.push(ImprovingMoveWrapper {
+                    self.improving_moves.insert(change, ImprovingMoveWrapper {
                         delta: change,
                         mov: ImprovingInterMove(
                             current_solution[start],
@@ -159,7 +158,7 @@ impl SteepestDeltasLocalSearch {
                             current_solution[start_next],
                             free_nodes[target],
                         ),
-                    })
+                    });
                 }
             }
         }
@@ -169,7 +168,7 @@ impl SteepestDeltasLocalSearch {
 impl LocalSearchType for SteepestDeltasLocalSearch {
     fn new(_solution_size: usize, _free_nodes_size: usize) -> Self {
         SteepestDeltasLocalSearch {
-            improving_moves: BinaryHeap::new(),
+            improving_moves: BTreeMap::new(),
         }
     }
 
@@ -206,7 +205,7 @@ impl LocalSearchType for SteepestDeltasLocalSearch {
 
         let mut moves_to_re_add: LinkedList<ImprovingMoveWrapper> = LinkedList::new();
 
-        while let Some(mov) = neighbourhood.improving_moves.pop() {
+        while let Some((_, mov)) = neighbourhood.improving_moves.pop_first() {
             let call = mov.check_move_validity(&current_solution, &nodes_poses);
 
             let next_move = match call {
@@ -247,7 +246,7 @@ impl LocalSearchType for SteepestDeltasLocalSearch {
                 let change = N::evaluate_move(cost_matrix, points_cost, &new_move, &current_solution, &free_nodes);
 
                 if change < 0 {
-                    neighbourhood.improving_moves.push(ImprovingMoveWrapper {
+                    neighbourhood.improving_moves.insert(change, ImprovingMoveWrapper {
                         delta: change,
                         mov: match new_move {
                             Intra(start, target) => {
@@ -272,12 +271,12 @@ impl LocalSearchType for SteepestDeltasLocalSearch {
                                 )
                             }
                         },
-                    })
+                    });
                 }
             }
 
             while let Some(re_add_move) = moves_to_re_add.pop_back() {
-                neighbourhood.improving_moves.push(re_add_move);
+                neighbourhood.improving_moves.insert(re_add_move.delta, re_add_move);
             }
         }
 
