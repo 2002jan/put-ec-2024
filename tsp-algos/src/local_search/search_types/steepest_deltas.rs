@@ -237,26 +237,9 @@ impl LocalSearchType for SteepestDeltasLocalSearch {
                 }
             };
 
-            mov.update_nodes_poses(&current_solution, &mut nodes_poses);
-
-            let eval_change = N::evaluate_move(cost_matrix, points_cost, &next_move, &current_solution, &free_nodes);
-
-            if eval_change != mov.delta {
-                if eval_change > 0 {
-                    continue;
-                } else if eval_change > mov.delta {
-                    moves_to_re_add.push_back(mov);
-                    continue
-                }
-            }
-
-            // let cost_bef = evaluate_solution(&current_solution.iter().map(|&x| x as i32).collect(), cost_matrix, points_cost);
-
             N::apply_move(&next_move, &mut current_solution, &mut free_nodes);
 
-            // let cost_after = evaluate_solution(&current_solution.iter().map(|&x| x as i32).collect(), cost_matrix, points_cost);
-
-            // let change = cost_after - cost_bef;
+            mov.update_nodes_poses(&current_solution, &mut nodes_poses);
 
             let mut new_moves = N::get_new_moves(&next_move, solution_size, free_nodes_size);
 
@@ -296,13 +279,6 @@ impl LocalSearchType for SteepestDeltasLocalSearch {
             while let Some(re_add_move) = moves_to_re_add.pop_back() {
                 neighbourhood.improving_moves.push(re_add_move);
             }
-
-            neighbourhood.improving_moves.retain(|x|{ match x.check_move_validity(&current_solution, &nodes_poses) {
-                Valid => true,
-                Reverse => true,
-                Skip => true,
-                Remove => false
-            }});
         }
 
         current_solution
