@@ -79,8 +79,12 @@ impl LocalSearchType for SteepestLocalSearch {
             self.current_start = self.next_start;
             self.next_start += 1;
 
-            self.next_intra_target = self.next_start + 1;
+            self.next_intra_target = 0;
             self.next_inter_target = 0;
+        }
+
+        if self.next_intra_target == self.current_start {
+            self.next_intra_target += 1;
         }
 
         if self.next_start >= self.intra_size {
