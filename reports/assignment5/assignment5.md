@@ -17,7 +17,85 @@ As an input we received a list of coordinates of cities, along with the cost. To
 ## Steepest local search with the use of deltas from previous iterations
 
 ```
-TODO
+Input:
+    cost_matrix: Cost matrix for evaluating moves.
+    points_cost: Additional costs for nodes.
+    starting_solution: Initial Hamiltonian cycle.
+    Output: Optimized solution minimizing total costs.
+
+Setup:
+    Data Structures:
+        current_solution: Start with starting_solution.
+        free_nodes: Nodes not in current_solution.
+        nodes_poses: HashMap to track each node's position and inclusion in the cycle.
+        improving_moves: A sorted map (BTreeMap) storing moves by delta values (ImprovingMoveWrapper).
+        
+Main algorithm
+
+1. Fill improving_moves:
+    For each node in current_solution and free_nodes:
+    
+        Evaluate Intra-Moves.
+        Evaluate Inter-Moves.
+    
+    Add all improving moves (negative delta) to improving_moves.
+2. Reverse current solution and recompute step 1 to get all improving moves.
+3. Iterate over improving_moves
+    initialize moves_to_re_add as a linked list of moves to be skipped.
+    while improving_moves is not empty:
+        retrieve the best move  
+        check if the move is still valid
+        
+       
+Move Validity Checks
+
+    For Each Move in improving_moves:
+
+        If Intra-Move:
+            Extract start, start_prev, target, target_next.
+            Compute start_pos and target_pos using nodes_poses.
+            Evaluate validity:
+                Removed Edges Do Not Exist:
+                    Remove the move from improving_moves.
+                Edges Exist in Different Direction (Partial Reverse):
+                    Skip this move (retain in improving_moves for future evaluation).
+                Edges Exist in Same Direction (Valid Orientation):
+                    Mark as valid.
+                Edges are Reversed:
+                    Mark as Reverse
+
+        If Inter-Move:
+            Extract start, start_prev, start_next, target.
+            Compute start_pos and target_pos.
+            Evaluate validity:
+                Removed Edges Do Not Exist:
+                    Remove the move.
+                Edges Exist in Valid Orientation:
+                    Mark as valid.
+
+    Based on Validity:
+        Valid Move:
+            Apply the move.
+            Remove it from improving_moves.
+        Reverse Direction:
+            Reverse edges in the move and apply. 
+        Skip:
+            Retain move in moves_to_re_add for future evaulation (at the end of the iteration place in improving_moves)
+
+4. Apply the move to current_solution and update:
+    Swap or reorder nodes as per the move type.
+    Update nodes_poses with new positions.
+
+5. Generate new potential moves using get_new_moves:
+    Evaluate deltas for the new moves.
+    Add all valid, improving moves (negative deltas) to improving_moves.
+
+6. Re-add skipped moves to improving_moves.
+
+Termination
+
+    Repeat until no improving moves remain.
+    Return the optimized current_solution.
 ```
 
 # Table of the results 
