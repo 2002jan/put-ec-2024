@@ -257,3 +257,6 @@ Best solution:
 
 
 # Conclusions
+
+The execution time of deltas is must faster (2 times), simultaneously yielding similar results, which makes this algorithm a much better choice. The only disadvantage is the increased memory usage, due to the need 
+to store moves while the normal steepest local search generates them on the fly. 
