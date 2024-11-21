@@ -5,11 +5,15 @@ use tsp_utils::evaluate_solution::evaluate_solution;
 use tsp_utils::output_writer::write_output;
 use crate::TspAlgorithm;
 
-pub fn test_tsp_algorithm<Algorithm: TspAlgorithm>(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, output_path: &Option<PathBuf>, verbose: bool) -> (i32, i32, i32)
-{
-    let problem_size = cost_matrix.size();
+pub fn test_tsp_algorithm_with_runs<Algorithm: TspAlgorithm>(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, output_path: &Option<PathBuf>, verbose: bool, runs: usize) -> (i32, i32, i32) {
+    let mut problem_size = runs;
+
+    if problem_size > cost_matrix.size() {
+        problem_size = cost_matrix.size();
+    }
+
     let mut min_cost = i32::MAX;
-    let mut min_solution= vec![0];
+    let mut min_solution = vec![0];
     let mut max_cost = 0;
     let mut max_solution = vec![0];
     let mut aggregated_cost = 0;
@@ -58,4 +62,10 @@ pub fn test_tsp_algorithm<Algorithm: TspAlgorithm>(cost_matrix: &CostMatrix, poi
     }
 
     (min_cost, max_cost, aggregated_cost)
+}
+
+pub fn test_tsp_algorithm<Algorithm: TspAlgorithm>(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, output_path: &Option<PathBuf>, verbose: bool) -> (i32, i32, i32)
+{
+    let problem_size = cost_matrix.size();
+    test_tsp_algorithm_with_runs::<Algorithm>(cost_matrix, points_cost, output_path, verbose, problem_size)
 }
