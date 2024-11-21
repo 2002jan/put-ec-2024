@@ -1,7 +1,7 @@
 use rand::seq::SliceRandom;
 use tsp_utils::cost_matrix::CostMatrix;
 use rand::thread_rng;
-use crate::local_search::local_search::StartingSolution;
+use crate::local_search::starting_solution::StartingSolution;
 
 pub struct RandomStartingSolution;
 

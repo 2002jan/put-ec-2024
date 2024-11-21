@@ -4,7 +4,7 @@ use tsp_utils::evaluate_solution::evaluate_solution;
 use crate::greedy_heuristics::greedy_cycle::GreedyCycle;
 use crate::greedy_heuristics::greedy_weighted_2regret_cycle::GreedyWeighted2Regret;
 use crate::greedy_heuristics::nearest_neighbor_any::NearestNeighborAnyAlgorithm;
-use crate::local_search::local_search::StartingSolution;
+use crate::local_search::starting_solution::StartingSolution;
 use crate::TspAlgorithm;
 
 
