@@ -1,4 +1,4 @@
-# Assignment 5 - Multiple Start Local Search and Iterated Local Search
+# Assignment 6 - Multiple Start Local Search and Iterated Local Search
 
 
 ## Authors
