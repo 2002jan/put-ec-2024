@@ -114,33 +114,10 @@ Termination
 | Random Start Two Edges Intra Steepest           | 75326 (72938-80126) | 49725 (46957-52832) |
 | Random Start Two Edges Intra Steepest Deltas    | 74207 (71342-78723) | 49160 (46761-52674) |
 
-```mermaid
----
-config:
-xyChart:
-width: 800
-height: 600
----
-xychart-beta
-title "Minimal scores for TSPA"
-x-axis "Algorithm" ["RNG", "REG", "GNG", GEG, RNS, GNS, GES, RES, Candidate, Deltas]
-y-axis "Score" 60000 --> 84000
-bar [82039,77907,70602,70004,81178,71041,70397,72938,74876, 71342]
-```
 
-```mermaid
----
-config:
-xyChart:
-width: 800
-height: 600
----
-xychart-beta
-title "Minimal scores for TSPB"
-x-axis "Algorithm" ["RNG", "REG", "GNG", GEG, RNS, GNS, GES, RES, Candidate, Deltas]
-y-axis "Score" 42000 --> 57000
-bar [53396,45665,43826,43790,56112,43862,43958,46957,47433, 46761]
-```
+![alt text](image.png)
+
+![alt text](image-1.png)
 
 ## Results of previous algorithms
 
@@ -173,19 +150,7 @@ bar [53396,45665,43826,43790,56112,43862,43958,46957,47433, 46761]
 | Random Start Two Edges Intra Steepest Deltas    | 8818  | 9259  |
 
 
-```mermaid
----
-config:
-xyChart:
-width: 800
-height: 600
----
-xychart-beta
-title "Execution times in microseconds TSPA (μs)"
-x-axis "Algorithm" ["RNG", "REG", "GNG", GEG, RNS, GNS, GES, RES, Candidate, Deltas]
-y-axis "Score" 5000 --> 30000
-bar [7634,5436,13122,13836,27127,12350,12498,18214,9225,8818]
-```
+![alt text](image-2.png)
 
 
 
