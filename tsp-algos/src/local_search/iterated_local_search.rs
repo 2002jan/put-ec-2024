@@ -8,7 +8,7 @@ use crate::local_search::neighbourhoods::{LocalSearchMove, LocalSearchNeighbourh
 use crate::local_search::neighbourhoods::LocalSearchMove::{Inter, Intra};
 use crate::local_search::search_types::LocalSearchType;
 use crate::local_search::starting_solution::StartingSolution;
-use crate::TspAlgorithm;
+use crate::{StartType, TspAlgorithm};
 
 const MAX_RUN_TIME: u64 = 2;
 const RANDOM_MOVES_COUNT: i32 = 20;
@@ -75,7 +75,7 @@ impl<
     N: LocalSearchNeighbourhood,
     SS: StartingSolution
 > TspAlgorithm for IteratedLocalSearch<T, N, SS> {
-    fn run(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: Option<i32>) -> Vec<i32> {
+    fn run(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: StartType) -> Vec<i32> {
         let interval = Duration::from_secs(MAX_RUN_TIME);
 
         let start = Instant::now();

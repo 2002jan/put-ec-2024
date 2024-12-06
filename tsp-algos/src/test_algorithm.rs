@@ -3,7 +3,7 @@ use std::time::Instant;
 use tsp_utils::cost_matrix::CostMatrix;
 use tsp_utils::evaluate_solution::evaluate_solution;
 use tsp_utils::output_writer::write_output;
-use crate::TspAlgorithm;
+use crate::{StartType, TspAlgorithm};
 
 pub fn test_tsp_algorithm_with_runs<Algorithm: TspAlgorithm>(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, output_path: &Option<PathBuf>, verbose: bool, runs: usize) -> (i32, i32, i32) {
     let mut problem_size = runs;
@@ -20,8 +20,8 @@ pub fn test_tsp_algorithm_with_runs<Algorithm: TspAlgorithm>(cost_matrix: &CostM
 
     let start = Instant::now();
 
-    for starting_point in 0..problem_size as i32 {
-        let solution = Algorithm::run(&cost_matrix, &points_cost, Option::from(starting_point));
+    for starting_point in 0..problem_size {
+        let solution = Algorithm::run(&cost_matrix, &points_cost, StartType::FromPoint(starting_point));
         let cost = evaluate_solution(&solution, &cost_matrix, &points_cost);
 
         if min_cost > cost {

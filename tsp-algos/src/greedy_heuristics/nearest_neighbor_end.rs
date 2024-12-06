@@ -1,22 +1,19 @@
 use tsp_utils::cost_matrix::CostMatrix;
-use crate::TspAlgorithm;
+use crate::{StartType, TspAlgorithm};
 
 pub struct NearestNeighborEndAlgorithm {}
 
 impl TspAlgorithm for NearestNeighborEndAlgorithm {
-    fn run(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: Option<i32>) -> Vec<i32> {
-        let size = cost_matrix.size() as i32;
-        let solution_size = ((size as f32) / 2.).ceil() as i32;
+    fn run(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: StartType) -> Vec<i32> {
+        let size = cost_matrix.size();
+        let solution_size = ((size as f32) / 2.).ceil() as usize;
 
-        let start_node = match start_from {
-            Some(start) => start,
-            None => 0
-        };
+        let mut solution: Vec<usize> = start_from.get_starting_solution(solution_size);
+        let mut visited = vec![false; size];
 
-
-        let mut solution = vec![start_node];
-        let mut visited = vec![false; cost_matrix.size()];
-        visited[start_node as usize] = true;
+        for i in 0..solution.len() {
+            visited[solution[i]] = true;
+        }
 
         // Build the solution by adding the nearest node at the end of the path
         while solution.len() < solution_size as usize {
@@ -27,7 +24,7 @@ impl TspAlgorithm for NearestNeighborEndAlgorithm {
             let mut nearest_node = None;
             let mut nearest_cost = i32::MAX;
 
-            for next_node in 0..cost_matrix.size() as i32 {
+            for next_node in 0..cost_matrix.size() {
                 if !visited[next_node as usize] {
                     let distance = cost_matrix.get(last_node as usize, next_node as usize) + points_cost[next_node as usize];
 
@@ -41,11 +38,11 @@ impl TspAlgorithm for NearestNeighborEndAlgorithm {
             // Add the nearest node to the solution and mark it as visited
             if let Some(nearest) = nearest_node {
                 solution.push(nearest);
-                visited[nearest as usize] = true;
+                visited[nearest] = true;
             }
         }
 
-        solution
+        solution.iter().map(|x| *x as i32).collect()
     }
 
     fn name() -> String {

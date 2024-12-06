@@ -2,11 +2,12 @@ use rand::seq::SliceRandom;
 use tsp_utils::cost_matrix::CostMatrix;
 use rand::thread_rng;
 use crate::local_search::starting_solution::StartingSolution;
+use crate::StartType;
 
 pub struct RandomStartingSolution;
 
 impl StartingSolution for RandomStartingSolution {
-    fn get_staring_solution(cost_matrix: &CostMatrix, _: &Vec<i32>, _: Option<i32>) -> Vec<usize> {
+    fn get_staring_solution(cost_matrix: &CostMatrix, _: &Vec<i32>, _: StartType) -> Vec<usize> {
         let size = cost_matrix.size();
         let solution_size = ((size as f32) / 2.).ceil() as i32;
         let mut nodes: Vec<i32> = (0..solution_size).collect::<Vec<i32>>();

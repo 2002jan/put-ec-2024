@@ -1,24 +1,24 @@
-use std::mem::size_of;
 use tsp_utils::cost_matrix::CostMatrix;
-use crate::TspAlgorithm;
+use tsp_utils::evaluate_solution::evaluate_solution_usize;
+use crate::{StartType, TspAlgorithm};
 
 const REGRET_WEIGHT: f32 = 0.5;
 
 pub struct GreedyWeighted2Regret {}
 
 impl TspAlgorithm for GreedyWeighted2Regret {
-    fn run(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: Option<i32>) -> Vec<i32> {
+    fn run(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: StartType) -> Vec<i32> {
         let size = cost_matrix.size();
         let solution_size = ((size as f32) / 2.).ceil() as usize;
 
-        let mut solution: Vec<usize> = Vec::with_capacity(solution_size * size_of::<i32>());
+        let mut solution: Vec<usize> = start_from.get_starting_solution(solution_size);
         let mut visited = vec![false; size];
 
-        let start_node = start_from.unwrap_or(0) as usize;
-        visited[start_node] = true;
-        solution.push(start_node);
+        for i in 0..solution.len() {
+            visited[solution[i]] = true;
+        }
 
-        let mut current_cost = points_cost[start_node];
+        let mut current_cost = evaluate_solution_usize(&solution, cost_matrix, points_cost);
 
         while solution.len() < solution_size {
             let current_solution_length = solution.len();

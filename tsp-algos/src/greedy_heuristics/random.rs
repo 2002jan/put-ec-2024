@@ -1,12 +1,12 @@
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 use tsp_utils::cost_matrix::CostMatrix;
-use crate::TspAlgorithm;
+use crate::{StartType, TspAlgorithm};
 
 pub struct RandomAlgorithm {}
 
 impl TspAlgorithm for RandomAlgorithm {
-    fn run(cost_matrix: &CostMatrix, _points_cost: &Vec<i32>, _start_from: Option<i32>) -> Vec<i32> {
+    fn run(cost_matrix: &CostMatrix, _points_cost: &Vec<i32>, _start_from: StartType) -> Vec<i32> {
         let size = cost_matrix.size() as i32;
         let solution_size = ((size as f32) / 2.).ceil() as i32;
 
