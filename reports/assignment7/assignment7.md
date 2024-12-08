@@ -126,11 +126,13 @@ bar [45970,46101,43647,46034,44095]
 
 # Table of average number of main loop iterations
 
-| Algorithm                                                          | Iterations |
-|--------------------------------------------------------------------|------------|
-| Greedy Regret Heuristic with weighted 2-Regret Random Destroy LNS  | 1183       |
-| Greedy Regret Heuristic with weighted 2-Regret Random Destroy LNSw | 846        |
-
+| Algorithm                                                                | Iterations |
+|--------------------------------------------------------------------------|------------|
+| Greedy Regret Heuristic with weighted 2-Regret Random Destroy LNS        | 1183       |
+| Greedy Regret Heuristic with weighted 2-Regret Random Destroy LNSw       | 846        |
+| Random Start Two Edges Intra Steepest Multiple Start Local Search        | 200        |
+| Random Start Two Edges Intra Steepest Deltas Multiple Start Local Search | 200        |
+| Random Start Two Edges Intra Steepest Deltas Iterated Local Search       | 382        |
 # Raw results 
 
 ## TSPA
@@ -196,3 +198,7 @@ Best solution:
 - [Github repository](https://github.com/2002jan/put-ec-2024)
 
 # Conclusions
+The large-scale neighborhood search performed better than Multiple Start Local Search, however it was worse
+than Iterated Local Search. The version of LNS with both local searches present performed better than the version without. 
+Interestingly, removing both local searches resulted in a worse performance - it could be seen that the graph had crossing edges. In the time bounded by MSLS runtime, 
+this algorithm could not "untangle" the solution. Unsurprisingly, the average number of iterations for LNSw was lower than LNS without local searches. 
