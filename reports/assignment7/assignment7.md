@@ -73,34 +73,8 @@ Return the best solution found during the runtime
 | Greedy Regret Heuristic with weighted 2-Regret Random Destroy LNS        | 70987 (70024-72625) | 46034 (44398-48968) |
 | Greedy Regret Heuristic with weighted 2-Regret Random Destroy LNSw       | 69720 (69378-70168) | 44095 (43509-44602) |
 
-```mermaid
----
-config:
-xyChart:
-width: 800
-height: 600
----
-xychart-beta
-title "Minimal scores for TSPA"
-x-axis "Algorithm" [MSLS, "MSLS (deltas)", ILS, LNS, LNS-with-local]
-y-axis "Score" 69000 --> 71000
-bar [70817,70758,69122,70024,69378]
-```
-
-```mermaid
----
-config:
-xyChart:
-width: 800
-height: 600
----
-xychart-beta
-title "Minimal scores for TSPB"
-x-axis "Algorithm" [MSLS, "MSLS (deltas)", ILS, LNS, LNS-with-local]
-y-axis "Score" 42000 --> 47000
-bar [45970,46101,43647,46034,44095]
-```
-
+![alt text](image.png)
+![alt text](image-1.png)
 
 ## Results of previous algorithms
 
@@ -181,7 +155,7 @@ Average cost: 44095
 Time took for 20 runs: 40.03672420s, time per run: 2001836μs
 
 Best solution:
-[194, 176, 113, 114, 137, 127, 89, 103, 163, 187, 153, 81, 77, 141, 91, 61, 36, 177, 5, 78, 175, 142, 45, 162, 80, 190, 136, 73, 54, 31, 193, 117, 198, 156, 1, 131, 121, 51, 90, 122, 135, 63, 40, 107, 133, 10, 147, 6, 188, 169, 132, 70, 3, 15, 145, 13, 195, 168, 139, 11, 138, 33, 160, 144, 104, 8, 82, 111, 29, 0, 109, 35, 143, 106, 124, 62, 18, 55, 34, 170, 152, 183, 140, 4, 149, 28, 20, 60, 148, 47, 94, 66, 179, 22, 99, 130, 95, 185, 86, 166]
+[194, 176, 113, 114, 137, 127, 89, 103sta, 163, 187, 153, 81, 77, 141, 91, 61, 36, 177, 5, 78, 175, 142, 45, 162, 80, 190, 136, 73, 54, 31, 193, 117, 198, 156, 1, 131, 121, 51, 90, 122, 135, 63, 40, 107, 133, 10, 147, 6, 188, 169, 132, 70, 3, 15, 145, 13, 195, 168, 139, 11, 138, 33, 160, 144, 104, 8, 82, 111, 29, 0, 109, 35, 143, 106, 124, 62, 18, 55, 34, 170, 152, 183, 140, 4, 149, 28, 20, 60, 148, 47, 94, 66, 179, 22, 99, 130, 95, 185, 86, 166]
 ```
 
 # Plots of the results
