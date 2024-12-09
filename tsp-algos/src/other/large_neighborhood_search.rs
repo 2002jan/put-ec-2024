@@ -55,7 +55,6 @@ impl<
                 best_solution = new_solution;
             }
         }
-
         best_solution.iter().map(|&x| x as i32).collect()
     }
 
@@ -69,23 +68,27 @@ impl<
 }
 
 pub struct LargeNeighborhoodSearch<
+    T: LocalSearchType,
     R: TspAlgorithm,
     D: SolutionDestroyer
 > {
+    t: PhantomData<T>,
     r: PhantomData<R>,
     d: PhantomData<D>,
 }
 
 impl<
+    T: LocalSearchType,
     R: TspAlgorithm,
     D: SolutionDestroyer
-> TspAlgorithm for LargeNeighborhoodSearch<R, D> {
+> TspAlgorithm for LargeNeighborhoodSearch<T, R, D> {
     fn run(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: StartType) -> Vec<i32> {
         let interval = Duration::from_secs(MAX_RUN_TIME);
         let start = Instant::now();
 
         let mut best_solution = RandomStartingSolution::get_staring_solution(cost_matrix, points_cost, start_from);
         let mut best_cost = evaluate_solution_usize(&best_solution, cost_matrix, points_cost);
+        best_solution = T::run::<TwoEdgesIntra>(cost_matrix, points_cost, best_solution);
 
         while start.elapsed() < interval {
             let mut new_solution = best_solution.clone();
@@ -104,7 +107,6 @@ impl<
                 best_solution = new_solution;
             }
         }
-
         best_solution.iter().map(|&x| x as i32).collect()
     }
 

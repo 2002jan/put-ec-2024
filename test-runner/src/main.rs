@@ -89,7 +89,7 @@ fn main() {
             test_tsp_algorithm_with_runs::<IteratedLocalSearch<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>>(&cost_matrix, &points_cost, &output_path, true, 20);
         }
         Command::Task7 => {
-            test_tsp_algorithm_with_runs::<LargeNeighborhoodSearch<GreedyWeighted2Regret, RandomDestroy>>(&cost_matrix, &points_cost, &output_path, true, 20);
+            test_tsp_algorithm_with_runs::<LargeNeighborhoodSearch<SteepestDeltasLocalSearch, GreedyWeighted2Regret, RandomDestroy>>(&cost_matrix, &points_cost, &output_path, true, 20);
             test_tsp_algorithm_with_runs::<LargeNeighborhoodSearchWith<SteepestDeltasLocalSearch, GreedyWeighted2Regret, RandomDestroy>>(&cost_matrix, &points_cost, &output_path, true, 20);
         }
     }
