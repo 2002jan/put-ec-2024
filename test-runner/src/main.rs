@@ -22,6 +22,10 @@ use tsp_algos::other::destroy_methods::random_destroy::RandomDestroy;
 use tsp_algos::other::large_neighborhood_search::{LargeNeighborhoodSearch, LargeNeighborhoodSearchWith};
 use tsp_algos::test_algorithm::{test_tsp_algorithm, test_tsp_algorithm_with_runs};
 use tsp_utils::coordinate_tsp_reader::load_from_coordinate_csv;
+use similarity::get_similarity::{check_similarity_avg, check_similarity_best};
+use similarity::measures_of_similarity::common_edges::CommonEdges;
+use similarity::measures_of_similarity::common_nodes::CommonNodes;
+
 
 fn main() {
     let args = Args::build();
@@ -91,6 +95,12 @@ fn main() {
         Command::Task7 => {
             test_tsp_algorithm_with_runs::<LargeNeighborhoodSearch<SteepestDeltasLocalSearch, GreedyWeighted2Regret, RandomDestroy>>(&cost_matrix, &points_cost, &output_path, true, 20);
             test_tsp_algorithm_with_runs::<LargeNeighborhoodSearchWith<SteepestDeltasLocalSearch, GreedyWeighted2Regret, RandomDestroy>>(&cost_matrix, &points_cost, &output_path, true, 20);
+        }
+        Command::Task8 => {
+            check_similarity_best::<IteratedLocalSearch<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>, LocalSearch<GreedyLocalSearch, TwoEdgesIntra, RandomStartingSolution>, CommonNodes>(&cost_matrix, &points_cost, &output_path, true);
+            check_similarity_best::<IteratedLocalSearch<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>, LocalSearch<GreedyLocalSearch, TwoEdgesIntra, RandomStartingSolution>, CommonEdges>(&cost_matrix, &points_cost, &output_path, true);
+            check_similarity_avg::<LocalSearch<GreedyLocalSearch, TwoEdgesIntra, RandomStartingSolution>, CommonNodes>(&cost_matrix, &points_cost, &output_path, true);
+            check_similarity_avg::<LocalSearch<GreedyLocalSearch, TwoEdgesIntra, RandomStartingSolution>, CommonEdges>(&cost_matrix, &points_cost, &output_path, true);
         }
     }
 

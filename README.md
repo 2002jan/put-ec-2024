@@ -12,6 +12,7 @@ where `<command>` is one of the following:
 - `task1` - runs the first task of the assignment (TSP problem)
 
 ## Visualization usage 
+### TSP visualization
 Python script `visualize.py` is used to visualize the results of the algorithm. It is present in the visualization directory. To use it type the following command 
 ```bash
 python .\visualization\visualize.py  <path_to_file> <path_to_problem_instance> <path_for_plot_outputs>
@@ -24,3 +25,9 @@ You can also use a shell script `run_visualization.sh` to run the visualization 
 .\visualization\run_visualization.ps1 <path_to_results> <path_to_problem_instance>
 ```
 The arguments are optional. If not provided, the script will use the default values `<path_to_results>` is outputs directory and <path_to_problem_instance> is data/TSPA.csv.
+
+### Similarity visualization
+```bash
+python .\visualization\similarity_visualization.py <path_to_results> 
+```
+where `<path_to_results>` is the path to the file with the results of the algorithm, represented as a csv file with objective value and similarity.

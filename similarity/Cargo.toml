@@ -1,0 +1,12 @@
+[package]
+name = "similarity"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tsp-utils = {path = "../tsp-utils"}
+tsp-algos = {path = "../tsp-algos"}
+rand = "0.8.5"
+chrono = "0.4.38"
+indicatif = "0.17.8"
+csv = "1.3.0"

@@ -21,7 +21,8 @@ pub enum Command {
     Task4,
     Task5,
     Task6,
-    Task7
+    Task7,
+    Task8
 }
 
 impl Args {
