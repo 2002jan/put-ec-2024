@@ -41,7 +41,7 @@ pub fn check_similarity_best<
     }
     let avg_similarity = pairs.iter().map(|(_, similarity)| similarity).sum::<i32>() / pairs.len() as i32;
     if verbose {
-        println!("Comparing to Best Solution: Similarity measure: {}, Average Similarity: {}\n", SimilarityMeasure::get_name(), avg_similarity);
+        println!("Comparing to: Best Solution, Similarity measure: {}, Average Similarity: {}\n", SimilarityMeasure::get_name(), avg_similarity);
     }
     write_output_to_csv(output_path, pairs.clone(), best_cost, format!("{}_best", SimilarityMeasure::get_snaked_name()));
 
@@ -90,7 +90,7 @@ pub fn check_similarity_avg<
 
     let avg_similarity = pairs.iter().map(|(_, similarity)| similarity).sum::<i32>() / pairs.len() as i32;
     if verbose {
-        println!("Comparing to all other solutions: Similarity measure: {}, Average Similarity: {}\n", SimilarityMeasure::get_name(), avg_similarity);
+        println!("Comparing to: All other solutions, Similarity measure: {}, Average Similarity: {}\n", SimilarityMeasure::get_name(), avg_similarity);
     }
     write_output_to_csv(output_path, pairs.clone(), 0, format!("{}_avg", SimilarityMeasure::get_snaked_name()));
 
