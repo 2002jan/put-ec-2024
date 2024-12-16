@@ -12,21 +12,14 @@ def generate_graph(dir_path, file_path):
     # remove last row
     data = data.iloc[:-1, :]
     # cast all elements to int
-    data = data.astype(int)
+    if "best" in file_path:
+        data = data.astype(int)
+    else:
+        data = data.astype(float)
     lst_obj = list(data.iloc[:, 0])
     lst_sim = list(data.iloc[:, 1])
     # print(len(set(lst_obj)))
-    dc = {}
-    for obj in range(len(lst_obj)):
-        if lst_obj[obj] in dc:
-            dc[lst_obj[obj]].append(lst_sim[obj])
-        else:
-            dc[lst_obj[obj]] = [lst_sim[obj]]
-    for key in dc:
-        dc[key] = np.mean(dc[key])
 
-    lst_obj = list(dc.keys())
-    lst_sim = list(dc.values())
     correlaction_coeff = pearsonr(lst_obj, lst_sim).statistic
 
 
@@ -36,7 +29,6 @@ def generate_graph(dir_path, file_path):
     plt.title(f"{ftype}: {round(correlaction_coeff,3)}")
     plt.xlabel("Objective function value")
     plt.ylabel("Similarity")
-
 
     plt.savefig(f'{dir_path}/plots/{ftype}.png')
 

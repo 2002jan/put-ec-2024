@@ -52,17 +52,17 @@ pub fn check_similarity_best<
 pub fn check_similarity_avg<
     GreedyAlgorithm: TspAlgorithm,
     SimilarityMeasure: SimMeasure
->(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, output_path: &Option<PathBuf>, verbose: bool) -> Vec<(i32, i32)> {
+>(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, output_path: &Option<PathBuf>, verbose: bool) -> Vec<(i32, f32)> {
 
 
-    let mut pairs: Vec<(i32, i32)> = Vec::new();
+    let mut pairs: Vec<(i32, f32)> = Vec::new();
 
 
     let mut objective_values = Vec::new();
     let mut solutions = Vec::new();
 
     // map containing solution and tuple (objective value, average similarity to other sols)
-    let mut sol_sim_map: HashMap<Vec<i32>, (i32, i32)> = HashMap::new();
+    let mut sol_sim_map: HashMap<Vec<i32>, (i32, f32)> = HashMap::new();
 
     for _ in 0..1000 {
         let initial_solution = RandomStartingSolution::get_staring_solution(cost_matrix, points_cost, FromPoint(0));
@@ -73,13 +73,13 @@ pub fn check_similarity_avg<
     }
 
     for i in 0..1000 {
-        let mut similarity = 0;
+        let mut similarity: f32 = 0.0;
         for j in 0..1000 {
             if i != j {
-                similarity += SimilarityMeasure::evaluate_similarity(&solutions[i], &solutions[j]);
+                similarity += SimilarityMeasure::evaluate_similarity(&solutions[i], &solutions[j]) as f32;
             }
         }
-        similarity /= 999;
+        similarity /= 999.0;
         sol_sim_map.insert(solutions[i].clone(), (objective_values[i], similarity));
     }
 
@@ -88,7 +88,7 @@ pub fn check_similarity_avg<
         pairs.push(pair);
     }
 
-    let avg_similarity = pairs.iter().map(|(_, similarity)| similarity).sum::<i32>() / pairs.len() as i32;
+    let avg_similarity = pairs.iter().map(|(_, similarity)| similarity).sum::<f32>() / pairs.len() as f32;
     if verbose {
         println!("Comparing to: All other solutions, Similarity measure: {}, Average Similarity: {}\n", SimilarityMeasure::get_name(), avg_similarity);
     }
@@ -97,7 +97,7 @@ pub fn check_similarity_avg<
     pairs
 }
 
-fn write_output_to_csv(output_path: &Option<PathBuf>, pairs: Vec<(i32, i32)>, best_objective_value: i32, similarity_name: String) {
+fn write_output_to_csv<T: ToString>(output_path: &Option<PathBuf>, pairs: Vec<(i32, T)>, best_objective_value: i32, similarity_name: String) {
     if let Some(path) = output_path {
         let output_path = path.join(format!("output_{}.csv", similarity_name));
 
