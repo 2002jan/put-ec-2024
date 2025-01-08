@@ -25,7 +25,10 @@ use tsp_utils::coordinate_tsp_reader::load_from_coordinate_csv;
 use similarity::get_similarity::{check_similarity_avg, check_similarity_best};
 use similarity::measures_of_similarity::common_edges::CommonEdges;
 use similarity::measures_of_similarity::common_nodes::CommonNodes;
-
+use tsp_algos::evolutionary::crossovers::keep_common_fill_ls_crossover::KeepCommonFillLSCrossover;
+use tsp_algos::evolutionary::hybrid_evolutionary::HybridEvolutionary;
+use tsp_algos::evolutionary::mutations::replace_mutation::ReplaceMutation;
+use tsp_algos::local_search::search_types::FakeLocalSearch;
 
 fn main() {
     let args = Args::build();
@@ -101,6 +104,10 @@ fn main() {
             check_similarity_best::<IteratedLocalSearch<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>, LocalSearch<GreedyLocalSearch, TwoEdgesIntra, RandomStartingSolution>, CommonEdges>(&cost_matrix, &points_cost, &output_path, true);
             check_similarity_avg::<LocalSearch<GreedyLocalSearch, TwoEdgesIntra, RandomStartingSolution>, CommonNodes>(&cost_matrix, &points_cost, &output_path, true);
             check_similarity_avg::<LocalSearch<GreedyLocalSearch, TwoEdgesIntra, RandomStartingSolution>, CommonEdges>(&cost_matrix, &points_cost, &output_path, true);
+        },
+        Command::Task9 => {
+            test_tsp_algorithm_with_runs::<HybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
+            test_tsp_algorithm_with_runs::<HybridEvolutionary<FakeLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
         }
     }
 
