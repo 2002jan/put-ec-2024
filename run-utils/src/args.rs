@@ -10,7 +10,7 @@ pub struct Args {
     /// Problem file path
     pub file: String,
 
-    pub outputs_folder: Option<String>
+    pub outputs_folder: Option<String>,
 }
 
 #[derive(Clone, ValueEnum)]
@@ -23,7 +23,8 @@ pub enum Command {
     Task6,
     Task7,
     Task8,
-    Task9
+    Task9,
+    Task10,
 }
 
 impl Args {

@@ -28,6 +28,7 @@ use similarity::measures_of_similarity::common_nodes::CommonNodes;
 use tsp_algos::evolutionary::crossovers::keep_common_fill_ls_crossover::KeepCommonFillLSCrossover;
 use tsp_algos::evolutionary::hybrid_evolutionary::HybridEvolutionary;
 use tsp_algos::evolutionary::mutations::replace_mutation::ReplaceMutation;
+use tsp_algos::evolutionary::tournament_hybrid_evolutionary::TournamentHybridEvolutionary;
 use tsp_algos::local_search::search_types::FakeLocalSearch;
 
 fn main() {
@@ -108,6 +109,9 @@ fn main() {
         Command::Task9 => {
             test_tsp_algorithm_with_runs::<HybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
             test_tsp_algorithm_with_runs::<HybridEvolutionary<FakeLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
+        },
+        Command::Task10 => {
+            test_tsp_algorithm_with_runs::<TournamentHybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
         }
     }
 
