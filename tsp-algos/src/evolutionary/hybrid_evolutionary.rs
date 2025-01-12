@@ -100,9 +100,15 @@ impl<
                 points_cost,
             );
 
+            for i in 0..POPULATION_SIZE {
+                if fitness == population[i].fitness {
+                    continue;
+                }
+            }
+
             population.push(HybridEvolutionaryChap {
                 fitness,
-                solution: new_chap
+                solution: new_chap,
             });
 
             Self::sort_population(&mut population);
@@ -114,10 +120,10 @@ impl<
     }
 
     fn name() -> String {
-        T::name() + " " + M::name().as_str() + " " + C::name().as_str() + " "+ "Hybrid Evolutionary algorithm"
+        T::name() + " " + M::name().as_str() + " " + C::name().as_str() + " " + "Hybrid Evolutionary algorithm"
     }
 
     fn snaked_name() -> String {
-        T::snaked_name() + "_" + M::snaked_name().as_str() + "_" + C::snaked_name().as_str() + "_"+ "hybrid_evolutionary_algorithm"
+        T::snaked_name() + "_" + M::snaked_name().as_str() + "_" + C::snaked_name().as_str() + "_" + "hybrid_evolutionary_algorithm"
     }
 }
