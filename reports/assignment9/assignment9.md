@@ -47,7 +47,15 @@ Function Mutate
 ## Crossover operator
 
 ```
-
+Function Crossover
+    Input: parent1, parent2
+    Create a set of all edges and their counterparts from parent1
+    Create an empty set nodes_to_keep 
+    Iterate through edges of parent2
+        If the edge is in the set of edges from parent1 add the nodes forming this edge to nodes_to_keep
+    Create a child with the nodes from nodes_to_keep and fill the remaining nodes with the GreedyWeighted2Regret heuristic
+    Return the child
+         
 ```
 
 # Table of the results
@@ -91,6 +99,19 @@ x-axis "Algorithm" [MSLS, "MSLS (deltas)", ILS, LNS, LNS-with-local, Hybrid-with
 y-axis "Score" 42000 --> 47000
 bar [45970,46101,43647,46034,44095,44659,44236]
 ```
+
+# Table of average number of main loop iterations
+
+| Algorithm                                                                | Iterations |
+|--------------------------------------------------------------------------|------------|
+| Greedy Regret Heuristic with weighted 2-Regret Random Destroy LNS        | 1183       |
+| Greedy Regret Heuristic with weighted 2-Regret Random Destroy LNSw       | 846        |
+| Random Start Two Edges Intra Steepest Multiple Start Local Search        | 200        |
+| Random Start Two Edges Intra Steepest Deltas Multiple Start Local Search | 200        |
+| Random Start Two Edges Intra Steepest Deltas Iterated Local Search       | 382        |
+| Hybrid Evolutionary Algorithm with LS after recombination                | 509        | 
+| Hybrid Evolutionary Algorithm with without LS after recombination        | 3130       |
+
 ## Results of previous algorithms
 
 | Algorithm                                       | TSPA                   | TSPB                |
@@ -186,5 +207,8 @@ Best solution:
 - [Github repository](https://github.com/2002jan/put-ec-2024)
 
 # Conclusions
-
-
+The hybrid evolutionary algorithm performed better than Multiple Start Local Search and Large Neighborhood Search, 
+but slightly worse than Iterated Local Search.
+The number of iterations of HEA without LS was significantly higher than HEA with LS, also HEA without LS 
+had the highest number of iterations in general among all previous algorithms.
+The performance of HEA with and without LS varied across instances, sometimes one outperformed the other.
