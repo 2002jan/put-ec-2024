@@ -112,6 +112,7 @@ fn main() {
         },
         Command::Task10 => {
             test_tsp_algorithm_with_runs::<TournamentHybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
+            // test_tsp_algorithm_with_runs::<TournamentHybridEvolutionary<SteepestDeltasLocalSearch, RandomMoveMutation, KeepCommonFillRandomCrossover>>(&cost_matrix, &points_cost, &output_path, true, 20);
         }
     }
 

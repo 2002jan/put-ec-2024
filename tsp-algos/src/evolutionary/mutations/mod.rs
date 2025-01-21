@@ -1,6 +1,7 @@
 use tsp_utils::cost_matrix::CostMatrix;
 
 pub mod replace_mutation;
+pub mod random_move_mutation;
 
 pub trait Mutation {
     fn mutate(solution: &Vec<usize>, cost_matrix: &CostMatrix, points_cost: &Vec<i32>) -> Vec<usize>;

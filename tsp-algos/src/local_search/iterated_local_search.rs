@@ -10,7 +10,7 @@ use crate::local_search::search_types::LocalSearchType;
 use crate::local_search::starting_solution::StartingSolution;
 use crate::{StartType, TspAlgorithm};
 
-const MAX_RUN_TIME: u64 = 2;
+const MAX_RUN_TIME: u64 = 2000;
 const RANDOM_MOVES_COUNT: i32 = 20;
 
 pub struct IteratedLocalSearch<
@@ -76,11 +76,14 @@ impl<
     SS: StartingSolution
 > TspAlgorithm for IteratedLocalSearch<T, N, SS> {
     fn run(cost_matrix: &CostMatrix, points_cost: &Vec<i32>, start_from: StartType) -> Vec<i32> {
-        let interval = Duration::from_secs(MAX_RUN_TIME);
+        let interval = Duration::from_millis(MAX_RUN_TIME);
 
         let start = Instant::now();
 
-        let mut best_solution = SS::get_staring_solution(cost_matrix, points_cost, start_from);
+        let mut best_solution = match start_from {
+            StartType::FromSolution(solution) => solution,
+            _ => SS::get_staring_solution(cost_matrix, points_cost, start_from)
+        };
         best_solution = T::run::<N>(cost_matrix, points_cost, best_solution);
 
         let mut best_cost = evaluate_solution_usize(&best_solution, cost_matrix, points_cost);

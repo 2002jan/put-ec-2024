@@ -8,11 +8,13 @@ use tsp_utils::evaluate_solution::evaluate_solution_usize;
 use crate::{StartType, TspAlgorithm};
 use crate::evolutionary::crossovers::Crossover;
 use crate::evolutionary::mutations::Mutation;
+use crate::local_search::iterated_local_search::IteratedLocalSearch;
 use crate::local_search::neighbourhoods::two_edges_intra::TwoEdgesIntra;
 use crate::local_search::search_types::LocalSearchType;
+use crate::local_search::search_types::steepest_deltas::SteepestDeltasLocalSearch;
 use crate::local_search::starting_solution::random_starting_solution::RandomStartingSolution;
 use crate::local_search::starting_solution::StartingSolution;
-use crate::StartType::FromStart;
+use crate::StartType::{FromSolution, FromStart};
 
 const POPULATION_SIZE: usize = 60;
 const MAX_RUN_TIME: u64 = 2;
@@ -117,6 +119,9 @@ impl<
 
                 let new_chap = T::run::<TwoEdgesIntra>(cost_matrix, points_cost, new_chap);
 
+                // let new_chap = IteratedLocalSearch::<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>::run(cost_matrix, points_cost, FromSolution(new_chap))
+                //     .iter().map(|&x| x as usize).collect();
+
                 let fitness = evaluate_solution_usize(
                     &new_chap,
                     cost_matrix,
@@ -206,7 +211,10 @@ impl<
         }
 
         Self::sort_population(&mut population);
-        population[0].solution.iter().map(|&x| x as i32).collect()
+
+        IteratedLocalSearch::<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>::run(cost_matrix, points_cost, FromSolution(population[0].solution.clone()))
+
+        // population[0].solution.iter().map(|&x| x as i32).collect()
     }
 
     fn name() -> String {
