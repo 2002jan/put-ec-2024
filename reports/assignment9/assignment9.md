@@ -28,7 +28,7 @@ Function RunHybridEvolutionary
         Perform mutation on the child
         Either run SteepestDeltasLocalSearch on the child or proceed without LS
         If the child already exists in the population go back to the beginning of the loop        
-        Add the child ot the population, sort it and truncate to keep the best 20 individuals
+        Add the child to the population, sort it and truncate to keep the best 20 individuals
      
     Return the best individual from the population
         
@@ -72,33 +72,9 @@ Function Crossover
 | Hybrid Evolutionary Algorithm with LS after recombination                | 69831 (69293-70248) | 45231 (44659-45867) |
 | Hybrid Evolutionary Algorithm with without LS after recombination        | 70094 (69369-70618) | 45185 (44236-46196) |
 
-```mermaid
----
-config:
-xyChart:
-width: 800
-height: 600
----
-xychart-beta
-title "Minimal scores for TSPA"
-x-axis "Algorithm" [MSLS, "MSLS (deltas)", ILS, LNS, LNS-with-local, Hybrid-with, Hybrid-without]
-y-axis "Score" 69000 --> 71000
-bar [70817,70758,69122,70024,69378,69293,69369]
-```
+![alt text](image.png)
 
-```mermaid
----
-config:
-xyChart:
-width: 800
-height: 600
----
-xychart-beta
-title "Minimal scores for TSPB"
-x-axis "Algorithm" [MSLS, "MSLS (deltas)", ILS, LNS, LNS-with-local, Hybrid-with, Hybrid-without]
-y-axis "Score" 42000 --> 47000
-bar [45970,46101,43647,46034,44095,44659,44236]
-```
+![alt text](image-1.png)
 
 # Table of average number of main loop iterations
 
