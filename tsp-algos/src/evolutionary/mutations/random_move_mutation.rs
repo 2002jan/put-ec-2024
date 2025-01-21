@@ -1,3 +1,4 @@
+use std::mem::size_of;
 use rand::{thread_rng, Rng};
 use tsp_utils::cost_matrix::CostMatrix;
 use crate::evolutionary::mutations::Mutation;
@@ -11,7 +12,7 @@ pub struct RandomMoveMutation {
 }
 
 impl Mutation for RandomMoveMutation {
-    fn mutate(solution: &Vec<usize>, cost_matrix: &CostMatrix, points_cost: &Vec<i32>) -> Vec<usize> {
+    fn mutate(solution: &Vec<usize>, _cost_matrix: &CostMatrix, points_cost: &Vec<i32>) -> Vec<usize> {
         let solution_size = solution.len();
         let free_nodes_size = points_cost.len() - solution_size;
         let mut new_solution = solution.clone();

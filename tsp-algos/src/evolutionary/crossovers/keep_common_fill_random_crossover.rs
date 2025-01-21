@@ -1,15 +1,14 @@
 use std::collections::HashSet;
-use std::marker::PhantomData;
+use std::mem::size_of;
 use rand::{thread_rng, Rng};
 use tsp_utils::cost_matrix::CostMatrix;
 use crate::evolutionary::crossovers::Crossover;
-use crate::{StartType, TspAlgorithm};
 
 pub struct KeepCommonFillRandomCrossover{
 }
 
 impl Crossover for KeepCommonFillRandomCrossover{
-    fn crossover(parent1: &Vec<usize>, parent2: &Vec<usize>, cost_matrix: &CostMatrix, points_cost: &Vec<i32>) -> Vec<usize> {
+    fn crossover(parent1: &Vec<usize>, parent2: &Vec<usize>, _cost_matrix: &CostMatrix, points_cost: &Vec<i32>) -> Vec<usize> {
         let len = parent1.len();
 
         let edges1: HashSet<(usize, usize)> = parent1

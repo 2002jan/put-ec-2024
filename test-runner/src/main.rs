@@ -30,6 +30,7 @@ use tsp_algos::evolutionary::hybrid_evolutionary::HybridEvolutionary;
 use tsp_algos::evolutionary::mutations::replace_mutation::ReplaceMutation;
 use tsp_algos::evolutionary::tournament_hybrid_evolutionary::TournamentHybridEvolutionary;
 use tsp_algos::local_search::search_types::FakeLocalSearch;
+use tsp_algos::other::combined_search::CombinedSearch;
 
 fn main() {
     let args = Args::build();
@@ -111,8 +112,19 @@ fn main() {
             test_tsp_algorithm_with_runs::<HybridEvolutionary<FakeLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
         },
         Command::Task10 => {
+            test_tsp_algorithm_with_runs::<HybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
+
             test_tsp_algorithm_with_runs::<TournamentHybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
-            // test_tsp_algorithm_with_runs::<TournamentHybridEvolutionary<SteepestDeltasLocalSearch, RandomMoveMutation, KeepCommonFillRandomCrossover>>(&cost_matrix, &points_cost, &output_path, true, 20);
+
+            test_tsp_algorithm_with_runs::<CombinedSearch<
+                HybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>,
+                IteratedLocalSearch<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>
+            >>(&cost_matrix, &points_cost, &output_path, true, 20);
+
+            test_tsp_algorithm_with_runs::<CombinedSearch<
+                TournamentHybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>,
+                IteratedLocalSearch<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>
+            >>(&cost_matrix, &points_cost, &output_path, true, 20);
         }
     }
 
