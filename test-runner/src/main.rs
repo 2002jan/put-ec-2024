@@ -26,7 +26,9 @@ use similarity::get_similarity::{check_similarity_avg, check_similarity_best};
 use similarity::measures_of_similarity::common_edges::CommonEdges;
 use similarity::measures_of_similarity::common_nodes::CommonNodes;
 use tsp_algos::evolutionary::crossovers::keep_common_fill_ls_crossover::KeepCommonFillLSCrossover;
+use tsp_algos::evolutionary::crossovers::partially_mapped_crossover::PartiallyMappedCrossover;
 use tsp_algos::evolutionary::hybrid_evolutionary::HybridEvolutionary;
+use tsp_algos::evolutionary::mutations::random_move_mutation::RandomMoveMutation;
 use tsp_algos::evolutionary::mutations::replace_mutation::ReplaceMutation;
 use tsp_algos::evolutionary::tournament_hybrid_evolutionary::TournamentHybridEvolutionary;
 use tsp_algos::local_search::search_types::FakeLocalSearch;
@@ -112,17 +114,35 @@ fn main() {
             test_tsp_algorithm_with_runs::<HybridEvolutionary<FakeLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
         },
         Command::Task10 => {
+            println!("------Baseline------\n");
+            test_tsp_algorithm_with_runs::<IteratedLocalSearch<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>>(&cost_matrix, &points_cost, &output_path, true, 20);
+
+            println!("\n\n-----Pure Evo-------\n");
             test_tsp_algorithm_with_runs::<HybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
 
             test_tsp_algorithm_with_runs::<TournamentHybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>>(&cost_matrix, &points_cost, &output_path, true, 20);
 
+            test_tsp_algorithm_with_runs::<TournamentHybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, PartiallyMappedCrossover>>(&cost_matrix, &points_cost, &output_path, true, 20);
+            test_tsp_algorithm_with_runs::<TournamentHybridEvolutionary<SteepestDeltasLocalSearch, RandomMoveMutation, PartiallyMappedCrossover>>(&cost_matrix, &points_cost, &output_path, true, 20);
+
+            println!("\n\n-----Mixed Evo------\n");
             test_tsp_algorithm_with_runs::<CombinedSearch<
                 HybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>,
                 IteratedLocalSearch<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>
             >>(&cost_matrix, &points_cost, &output_path, true, 20);
 
             test_tsp_algorithm_with_runs::<CombinedSearch<
-                TournamentHybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>,
+                TournamentHybridEvolutionary<SteepestDeltasLocalSearch, RandomMoveMutation, KeepCommonFillLSCrossover<GreedyWeighted2Regret>>,
+                IteratedLocalSearch<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>
+            >>(&cost_matrix, &points_cost, &output_path, true, 20);
+
+            test_tsp_algorithm_with_runs::<CombinedSearch<
+                TournamentHybridEvolutionary<SteepestDeltasLocalSearch, ReplaceMutation, PartiallyMappedCrossover>,
+                IteratedLocalSearch<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>
+            >>(&cost_matrix, &points_cost, &output_path, true, 20);
+
+            test_tsp_algorithm_with_runs::<CombinedSearch<
+                TournamentHybridEvolutionary<SteepestDeltasLocalSearch, RandomMoveMutation, PartiallyMappedCrossover>,
                 IteratedLocalSearch<SteepestDeltasLocalSearch, TwoEdgesIntra, RandomStartingSolution>
             >>(&cost_matrix, &points_cost, &output_path, true, 20);
         }

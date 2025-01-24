@@ -1,6 +1,7 @@
 pub mod keep_common_fill_ls_crossover;
 
 pub mod keep_common_fill_random_crossover;
+pub mod partially_mapped_crossover;
 
 use tsp_utils::cost_matrix::CostMatrix;
 
