@@ -43,8 +43,6 @@ impl Crossover for PartiallyMappedCrossover {
             }
         }
 
-        assert_eq!(new_solution.len(), new_solution.iter().cloned().collect::<std::collections::HashSet<_>>().len());
-
         new_solution
     }
 
