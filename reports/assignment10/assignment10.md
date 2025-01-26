@@ -336,3 +336,6 @@ Best solution:
 - [Github repository](https://github.com/2002jan/put-ec-2024)
 
 # Conclusions
+
+Introduction of tournament in place of stead-state elitism imported HEA performance, but it was still worse than ILS. Introduction of new Partially Mapped Crossover and Random Move Mutation further improved HAE, brining it very close to ILS. 
+The final step needed to outperform ILS was to use it after the HAE algorithm. This method not only outperforms ILS, but it also shrinks the performance range it comparison to pure ILS and other tested methods.
